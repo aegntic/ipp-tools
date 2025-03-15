@@ -1,0 +1,85 @@
+/* Base styles for CascadeVibe site */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* Primary colors */
+  --primary: #5468ff;
+  --primary-light: #7d8bff;
+  --primary-dark: #3a4eef;
+  --primary-gradient: linear-gradient(135deg, #5468ff, #8400ff);
+  
+  /* Secondary colors */
+  --secondary: #8400ff;
+  --secondary-light: #9b33ff;
+  --secondary-dark: #6800cc;
+  
+  /* Neutral colors */
+  --dark: #0f172a;
+  --dark-secondary: #1e293b;
+  --gray: #334155;
+  --gray-light: #64748b;
+  --gray-lighter: #94a3b8;
+  --light: #f1f5f9;
+  --white: #ffffff;
+  
+  /* Status colors */
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --info: #3b82f6;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  color: var(--gray);
+  background-color: var(--white);
+  min-height: 100vh;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+a:hover {
+  color: var(--primary-dark);
+}
+
+/* Remove button styling */
+button {
+  border: none;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* Focus styles for accessibility */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
