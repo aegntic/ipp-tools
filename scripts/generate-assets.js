@@ -18,14 +18,30 @@ try {
   console.log('Loaded asset configuration');
 } catch (error) {
   console.error('Error loading configuration:', error);
-  process.exit(1);
+  // Use default config as fallback
+  config = {
+    colorPrimary: "#5468ff",
+    colorSecondary: "#8400ff",
+    colorLight: "#f8f9fa",
+    colorDark: "#0f172a",
+    typography: {
+      fontPrimary: "Inter, sans-serif",
+      fontHeading: "Manrope, sans-serif"
+    }
+  };
+  console.log('Using default configuration as fallback');
 }
 
 // Setup output directory
 const outputDir = path.join(__dirname, '../sites/cascadevibe/public/assets/images');
-if (!fs.existsSync(outputDir)) {
-  fs.mkdirSync(outputDir, { recursive: true });
-  console.log(`Created output directory: ${outputDir}`);
+try {
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
+    console.log(`Created output directory: ${outputDir}`);
+  }
+} catch (error) {
+  console.error(`Error creating output directory: ${error.message}`);
+  console.log('Will attempt to continue with generation...');
 }
 
 // Initialize the generator
@@ -41,10 +57,30 @@ console.log(`- Output Directory: ${outputDir}`);
 
 // Generate all assets
 console.log('Generating assets...');
-generator.generateAllAssets();
+try {
+  generator.generateAllAssets();
+} catch (error) {
+  console.error(`Error generating assets: ${error.message}`);
+  console.log('Continuing with specialized framework visualizations...');
+}
 
 // Generate specialized framework visualizations
 console.log('Generating specialized framework visualizations...');
+
+// Ensure the framework directories exist
+const frameworkDir = path.join(outputDir, 'framework');
+const socialProofResultsDir = path.join(outputDir, 'social-proof/results');
+
+try {
+  if (!fs.existsSync(frameworkDir)) {
+    fs.mkdirSync(frameworkDir, { recursive: true });
+  }
+  if (!fs.existsSync(socialProofResultsDir)) {
+    fs.mkdirSync(socialProofResultsDir, { recursive: true });
+  }
+} catch (error) {
+  console.error(`Error creating visualization subdirectories: ${error.message}`);
+}
 
 // Cognitive Map Visualization
 function generateCognitiveMap() {
@@ -96,21 +132,23 @@ function generateCognitiveMap() {
     const source = nodes.find(n => n.id === conn.source);
     const target = nodes.find(n => n.id === conn.target);
     
-    // Calculate connection path
-    const curveFactor = 30;
-    const midX = (source.x + target.x) / 2;
-    const midY = (source.y + target.y) / 2 - curveFactor;
-    
-    svg += `
-      <path 
-        d="M${source.x},${source.y} Q${midX},${midY} ${target.x},${target.y}" 
-        fill="none" 
-        stroke="url(#connectionGradient)" 
-        stroke-width="${2 + conn.strength * 3}" 
-        stroke-opacity="${0.4 + conn.strength * 0.3}" 
-        stroke-dasharray="${conn.strength < 0.7 ? '5,5' : ''}"  
-      />
-    `;
+    if (source && target) {
+      // Calculate connection path
+      const curveFactor = 30;
+      const midX = (source.x + target.x) / 2;
+      const midY = (source.y + target.y) / 2 - curveFactor;
+      
+      svg += `
+        <path 
+          d="M${source.x},${source.y} Q${midX},${midY} ${target.x},${target.y}" 
+          fill="none" 
+          stroke="url(#connectionGradient)" 
+          stroke-width="${2 + conn.strength * 3}" 
+          stroke-opacity="${0.4 + conn.strength * 0.3}" 
+          stroke-dasharray="${conn.strength < 0.7 ? '5,5' : ''}"  
+        />
+      `;
+    }
   });
   
   // Draw nodes
@@ -530,26 +568,50 @@ function generateMetricsVisualization() {
   return svg;
 }
 
-// Create specialized framework visualizations
-const cognitiveMapSVG = generateCognitiveMap();
-fs.writeFileSync(
-  path.join(outputDir, 'framework/cognitive-map.svg'),
-  cognitiveMapSVG
-);
-console.log('Generated cognitive map visualization');
+// Create specialized framework visualizations with error handling
+try {
+  const cognitiveMapSVG = generateCognitiveMap();
+  try {
+    fs.writeFileSync(
+      path.join(frameworkDir, 'cognitive-map.svg'),
+      cognitiveMapSVG
+    );
+    console.log('Generated cognitive map visualization');
+  } catch (error) {
+    console.error(`Error writing cognitive map: ${error.message}`);
+  }
+} catch (error) {
+  console.error(`Error generating cognitive map: ${error.message}`);
+}
 
-const implementationProcessSVG = generateImplementationProcess();
-fs.writeFileSync(
-  path.join(outputDir, 'framework/implementation-process.svg'),
-  implementationProcessSVG
-);
-console.log('Generated implementation process visualization');
+try {
+  const implementationProcessSVG = generateImplementationProcess();
+  try {
+    fs.writeFileSync(
+      path.join(frameworkDir, 'implementation-process.svg'),
+      implementationProcessSVG
+    );
+    console.log('Generated implementation process visualization');
+  } catch (error) {
+    console.error(`Error writing implementation process: ${error.message}`);
+  }
+} catch (error) {
+  console.error(`Error generating implementation process: ${error.message}`);
+}
 
-const metricsVisualizationSVG = generateMetricsVisualization();
-fs.writeFileSync(
-  path.join(outputDir, 'social-proof/results/metrics-visualization.svg'),
-  metricsVisualizationSVG
-);
-console.log('Generated metrics visualization');
+try {
+  const metricsVisualizationSVG = generateMetricsVisualization();
+  try {
+    fs.writeFileSync(
+      path.join(socialProofResultsDir, 'metrics-visualization.svg'),
+      metricsVisualizationSVG
+    );
+    console.log('Generated metrics visualization');
+  } catch (error) {
+    console.error(`Error writing metrics visualization: ${error.message}`);
+  }
+} catch (error) {
+  console.error(`Error generating metrics visualization: ${error.message}`);
+}
 
-console.log('All visualizations generated successfully!');
+console.log('Visualization generation complete!');
