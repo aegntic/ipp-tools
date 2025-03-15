@@ -1,16 +1,26 @@
-# Main production context
+# Netlify Configuration for IPP.TOOLS Platform
+
+# Main production build configuration
 [build]
   command = "npm run build:all"
   publish = "dist"
   environment = { NODE_VERSION = "18.x" }
 
-# Domain-specific configurations
+# Domain-specific environment variables
 [context.production.environment]
   VITE_API_URL = "https://api.ipp.tools"
   VITE_ANALYTICS_ID = "G-XXXXXXXX"
   VITE_ENABLE_PSYCHOLOGICAL_TRIGGERS = "true"
 
-# Framework-specific redirects for proper site routing
+# Development branch specific settings
+[context.develop]
+  command = "npm run build:all"
+  
+# PR preview settings
+[context.deploy-preview]
+  command = "npm run build:all"
+
+# Framework-specific redirects for multi-domain architecture
 [[redirects]]
   from = "https://vibecascade.ipp.tools/*"
   to = "/vibecascade/index.html"
@@ -31,8 +41,55 @@
   force = true
   query = {framework = "PrimalPositioning"}
 
-# 404 handling
+[[redirects]]
+  from = "https://quantumconversion.ipp.tools/*"
+  to = "/waitlist.html"
+  status = 200
+  force = true
+  query = {framework = "QuantumConversion"}
+
+# 404 fallback - SPA support
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+
+# Netlify functions directory configuration
+[functions]
+  directory = "netlify/functions"
+
+# Build settings
+[build.processing]
+  skip_processing = false
+[build.processing.css]
+  bundle = true
+  minify = true
+[build.processing.js]
+  bundle = true
+  minify = true
+[build.processing.images]
+  compress = true
+
+# Headers for security and caching
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://www.googletagmanager.com https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.facebook.com; connect-src 'self' https://api.ipp.tools https://www.google-analytics.com;"
+
+# Cache control for static assets
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
