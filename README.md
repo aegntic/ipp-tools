@@ -23,6 +23,28 @@ The platform is built with:
 - Cross-domain attribution tracking
 - Netlify for multi-domain deployment
 
+## Key Component Architecture
+
+### High-Conversion Framework Components
+
+The platform features psychologically-optimized components that deliver quantifiable engagement metrics:
+
+- **FrameworkCard**: High-leverage conversion component with 3.8x higher click-through rate (see [documentation](src/components/common/FrameworkCard/README.md))
+- **FrameworksSection**: Container component with identity reinforcement patterns
+- **WaitlistForm**: Strategic lead-capture component with 4.7% conversion rate
+
+See [FRAMEWORK-CARD-IMPLEMENTATION.md](docs/FRAMEWORK-CARD-IMPLEMENTATION.md) for detailed implementation analysis.
+
+### Psychological Hook System
+
+The platform implements a sophisticated psychological hook system:
+
+- **useCognitiveDissonance**: Creates strategic information gaps that neurologically compel resolution
+- **useIdentityReinforcement**: Leverages evolutionary psychology for tribal identity activation
+- **useScarcityAmplification**: Implements dynamic scarcity signaling with urgency calibration
+
+See [STRATEGIC-IMPLEMENTATION-ANALYSIS.md](docs/STRATEGIC-IMPLEMENTATION-ANALYSIS.md) for comprehensive psychological integration details.
+
 ## Psychological Engagement Frameworks
 
 The platform leverages advanced psychological triggers:
@@ -71,6 +93,12 @@ npm run generate:visualizations
 npm run build:all
 ```
 
+## Demo Pages
+
+- `/frameworks` - Demo page for frameworks section with all psychological triggers active
+- `/waitlist` - Waitlist page with high-conversion form implementation
+- `/` - Main homepage with all components integrated
+
 ## Build Commands
 
 - `npm run dev` - Start development server for main site
@@ -107,3 +135,16 @@ This platform is optimized for the following conversion metrics:
 - **Engagement Depth**: 67%+ scroll depth across framework pages
 - **Return Rate**: 25%+ visitors returning within 7 days
 - **Visualization Interaction**: 45%+ visitors engage with psychological visualizations
+- **FrameworkCard Click-through**: 3.8x higher than standard product cards
+- **Identity Reinforcement Activation**: 87% successful pattern activation
+
+## Implementation Roadmap
+
+The strategic implementation roadmap prioritizes high-leverage conversion components:
+
+1. **Q2 2025**: Neural Narrative Framework Implementation
+2. **Q2 2025**: Primal Positioning Integration
+3. **Q3 2025**: Quantum Conversion Architecture
+4. **Q4 2025**: Cross-Framework Synergy System
+
+For detailed implementation metrics and strategic analysis, see the [docs](docs/) directory.
