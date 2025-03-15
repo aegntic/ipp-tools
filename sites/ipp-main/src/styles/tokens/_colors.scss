@@ -1,0 +1,60 @@
+/* 
+   IPP.TOOLS Color Design Tokens
+   Strategically selected colors for maximum psychological impact
+*/
+
+// Primary colors - Represent intelligence, psychology & persuasion
+$primary: #5468ff;
+$primary-light: #7d8bff;
+$primary-dark: #3a4eef;
+$primary-gradient: linear-gradient(135deg, #5468ff, #8400ff);
+
+// Secondary colors - Represent elite status and exclusivity
+$secondary: #8400ff;
+$secondary-light: #9b33ff;
+$secondary-dark: #6800cc;
+
+// Neutral colors - Sophisticated, authoritative base
+$dark: #0f172a;
+$dark-secondary: #1e293b;
+$gray: #334155;
+$gray-light: #64748b;
+$gray-lighter: #94a3b8;
+$light: #f1f5f9;
+$white: #ffffff;
+
+// Status colors - Represent system feedback states
+$success: #10b981;
+$warning: #f59e0b;
+$danger: #ef4444;
+$info: #3b82f6;
+
+// Psychological accent colors - Used sparingly for specific triggers
+$cognitive-accent: #ff5a5f;      // Urgency/attention trigger
+$authority-accent: #0ea5e9;      // Trust/expertise trigger
+$identity-accent: #f59e0b;       // Belonging/tribal trigger
+$exclusive-accent: #8b5cf6;      // Exclusivity/elite trigger
+
+// Gradient combinations for strategic psychological effects
+$cognitive-gradient: linear-gradient(135deg, $cognitive-accent, #ff9a9d);
+$authority-gradient: linear-gradient(135deg, $authority-accent, #38bdf8);
+$identity-gradient: linear-gradient(135deg, $identity-accent, #fbbf24);
+$exclusive-gradient: linear-gradient(135deg, $exclusive-accent, #a78bfa);
+
+// Transparency variants for layering and glass effects
+$primary-transparent-10: rgba(84, 104, 255, 0.1);
+$primary-transparent-20: rgba(84, 104, 255, 0.2);
+$primary-transparent-50: rgba(84, 104, 255, 0.5);
+
+$dark-transparent-50: rgba(15, 23, 42, 0.5);
+$dark-transparent-70: rgba(15, 23, 42, 0.7);
+$dark-transparent-90: rgba(15, 23, 42, 0.9);
+
+$white-transparent-10: rgba(255, 255, 255, 0.1);
+$white-transparent-30: rgba(255, 255, 255, 0.3);
+$white-transparent-50: rgba(255, 255, 255, 0.5);
+$white-transparent-70: rgba(255, 255, 255, 0.7);
+
+// Glass effect base colors
+$glass-light: rgba(255, 255, 255, 0.7);
+$glass-dark: rgba(15, 23, 42, 0.7);
