@@ -5,21 +5,21 @@
 # Global build settings (for monorepo)
 [build]
   base = "/"
-  command = "npm run build"
+  command = "npm run prebuild && npm run build"
   publish = "dist"
   ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- ."
 
 # Production context
 [context.production]
-  environment = { NODE_ENV = "production", TRACKING_ENABLED = "true" }
+  environment = { NODE_ENV = "production", TRACKING_ENABLED = "true", GENERATE_VISUALIZATIONS = "true" }
 
 # Staging/development context
 [context.staging]
-  environment = { NODE_ENV = "staging", TRACKING_ENABLED = "true", STAGING_INDICATOR = "true" }
+  environment = { NODE_ENV = "staging", TRACKING_ENABLED = "true", STAGING_INDICATOR = "true", GENERATE_VISUALIZATIONS = "true" }
 
 # Branch-specific context for development
 [context.branch-deploy]
-  environment = { NODE_ENV = "development", TRACKING_ENABLED = "false" }
+  environment = { NODE_ENV = "development", TRACKING_ENABLED = "false", GENERATE_VISUALIZATIONS = "true" }
 
 # Domain-specific build configurations
 
@@ -176,6 +176,11 @@
   [headers.values]
     Cache-Control = "public, max-age=604800"
 
+[[headers]]
+  for = "/assets/visualizations/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
 # Dependency Optimization
 [build.processing]
   skip_processing = false
@@ -189,3 +194,8 @@
     pretty_urls = true
   [build.processing.images]
     compress = true
+
+# Visualization generation configuration
+[build.environment]
+  GENERATE_VISUALIZATIONS = "true"
+  VISUALIZATION_OUTPUT_DIR = "public/assets/visualizations"
