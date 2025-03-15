@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import tracking from '../../utils/tracking';
 
 const WaitlistForm = ({ frameworkName = '', frameworkDescription = '', estimatedLaunch = '' }) => {
   // Form state
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [submitted, setSubmitted] = useState(false);
   
   // Psychological trigger states
@@ -53,14 +55,34 @@ const WaitlistForm = ({ frameworkName = '', frameworkDescription = '', estimated
     return () => clearInterval(timer);
   }, []);
 
+  // View tracking on component mount
+  useEffect(() => {
+    // Track form view with framework context
+    tracking.trackEvent('waitlist_view', {
+      framework: frameworkName || 'main',
+      spots_left: spotsLeft,
+    });
+  }, [frameworkName, spotsLeft]);
+
   // Form submission handler with psychological feedback
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    // Track conversion with framework context
+    tracking.trackWaitlistSignup(
+      frameworkName || 'main',
+      email
+    );
+    
+    // Additional tracking with rich metadata
+    tracking.trackConversion('waitlist_signup', {
+      framework: frameworkName || 'main',
+      spots_remaining: spotsLeft - 1,
+      time_on_page: Math.floor((new Date() - window.performance.timeOrigin) / 1000),
+    });
+    
     setSubmitted(true);
     setSpotsLeft(prev => Math.max(1, prev - 1));
-    
-    // In a real implementation, you would send the data to your backend here
-    console.log('Submitted email:', email);
   };
 
   return (
@@ -91,13 +113,49 @@ const WaitlistForm = ({ frameworkName = '', frameworkDescription = '', estimated
             {/* Form */}
             <form id="waitlist-form" onSubmit={handleSubmit}>
               <input 
+                type="text"
+                name="name"
+                placeholder="Your name (optional)"
+                value={name}
+                onChange={e => {
+                  setName(e.target.value);
+                  // Track form interaction
+                  if (e.target.value.length === 1) {
+                    tracking.trackEvent('form_interaction', {
+                      field: 'name',
+                      framework: frameworkName || 'main'
+                    });
+                  }
+                }}
+              />
+              <input 
                 type="email" 
+                name="email"
                 placeholder="Enter your email to join" 
                 value={email}
-                onChange={e => setEmail(e.target.value)}
+                onChange={e => {
+                  setEmail(e.target.value);
+                  // Track form interaction
+                  if (e.target.value.length === 1) {
+                    tracking.trackEvent('form_interaction', {
+                      field: 'email',
+                      framework: frameworkName || 'main'
+                    });
+                  }
+                }}
                 required 
               />
-              <button type="submit">Join Waitlist</button>
+              <button 
+                type="submit"
+                onClick={() => {
+                  // Track button click before form submission
+                  tracking.trackEvent('submit_button_click', {
+                    framework: frameworkName || 'main'
+                  });
+                }}
+              >
+                Join Waitlist
+              </button>
             </form>
           </>
         ) : (
