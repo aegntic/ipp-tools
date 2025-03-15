@@ -19,7 +19,8 @@ const path = require('path');
 const { GlassMorphicGenerator } = require('./glass-morphic-generator');
 
 // CLI configuration
-const { program } = require('commander');
+const commander = require('commander');
+const program = new commander.Command();
 
 program
   .name('generate-glass-visualizations')
@@ -147,30 +148,7 @@ async function main() {
     // Final message with usage information
     console.log('\n✅ All visualizations generated successfully!');
     console.log('===========================================================');
-    console.log(`
-The following SVG visualizations are now available in ${config.outputDir}:
-
-- dashboard.svg / dashboard-dark.svg
-  Advanced analytics dashboard visualization
-
-- analysis.svg / analysis-dark.svg
-  Content analysis wave visualization with glowing data points
-
-- fallacy.svg / fallacy-dark.svg
-  Quality fallacy visualization with psychological trigger points
-
-To use these visualizations in your React application:
-
-1. Import the GlassMorphicVisualization component from ${config.reactComponentDir}
-2. Use it as follows:
-
-   <GlassMorphicVisualization 
-     type="dashboard"
-     variant="light"
-     onHover={(type) => console.log(\`Viewed: \${type}\`)}
-     onClick={(type) => console.log(\`Clicked: \${type}\`)}
-   />
-`);
+    console.log(`\nThe following SVG visualizations are now available in ${config.outputDir}:\n\n- dashboard.svg / dashboard-dark.svg\n  Advanced analytics dashboard visualization\n\n- analysis.svg / analysis-dark.svg\n  Content analysis wave visualization with glowing data points\n\n- fallacy.svg / fallacy-dark.svg\n  Quality fallacy visualization with psychological trigger points\n\nTo use these visualizations in your React application:\n\n1. Import the GlassMorphicVisualization component from ${config.reactComponentDir}\n2. Use it as follows:\n\n   <GlassMorphicVisualization \n     type="dashboard"\n     variant="light"\n     onHover={(type) => console.log(\`Viewed: \${type}\`)}\n     onClick={(type) => console.log(\`Clicked: \${type}\`)}\n   />\n`);
     
   } catch (error) {
     console.error('\n❌ Error generating visualizations:', error);

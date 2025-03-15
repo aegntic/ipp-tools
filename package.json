@@ -27,10 +27,10 @@
     "generate:visualizations:all": "npm run generate:visualizations && npm run generate:visualizations:ipp && npm run generate:visualizations:cascadevibe"
   },
   "dependencies": {
-    "commander": "^11.1.0",
-    "svgdom": "^0.1.17",
     "@svgdotjs/svg.js": "^3.2.0",
-    "prop-types": "^15.8.1"
+    "commander": "^11.1.0",
+    "prop-types": "^15.8.1",
+    "svgdom": "^0.1.17"
   },
   "devDependencies": {
     "eslint": "^8.57.0",
