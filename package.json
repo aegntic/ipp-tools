@@ -19,7 +19,14 @@
     "test": "lerna run test",
     "clean": "lerna clean",
     "bootstrap": "lerna bootstrap",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "generate:visualizations": "node scripts/visualization/generate-glass-visualizations.js"
+  },
+  "dependencies": {
+    "commander": "^11.1.0",
+    "svgdom": "^0.1.17",
+    "@svgdotjs/svg.js": "^3.2.0",
+    "prop-types": "^15.8.1"
   },
   "devDependencies": {
     "eslint": "^8.57.0",
