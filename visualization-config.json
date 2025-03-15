@@ -1,37 +1,158 @@
 {
-  "outputDir": "public/assets/visualizations",
-  "variants": ["light", "dark"],
-  "reactComponentDir": "src/components/visualizations",
-  "psychologicalTriggers": {
-    "authorityPositioning": {
-      "enabled": true,
-      "effectiveness": 85
-    },
-    "cognitiveDissonance": {
-      "enabled": true,
-      "effectiveness": 92
-    },
-    "identityReinforcement": {
-      "enabled": true,
-      "effectiveness": 78
-    },
-    "scarcity": {
-      "enabled": true,
-      "effectiveness": 89
-    },
-    "socialProof": {
-      "enabled": true,
-      "effectiveness": 84
+  "version": "1.0.1",
+  "description": "IPP.TOOLS Visualization Configuration for Psychological Engagement",
+  "generationSettings": {
+    "defaultOutputDir": "./public/assets/visualizations",
+    "defaultVariant": "glass",
+    "defaultColorScheme": "primary",
+    "dimensions": {
+      "standard": {
+        "width": 800,
+        "height": 600
+      },
+      "dashboard": {
+        "width": 800,
+        "height": 600
+      },
+      "chart": {
+        "width": 800,
+        "height": 600
+      },
+      "logo": {
+        "width": 180,
+        "height": 60
+      },
+      "particles": {
+        "width": 800,
+        "height": 600
+      }
     }
   },
-  "animationSettings": {
-    "initialDelay": 500,
-    "staggerDelay": 200,
-    "enableReducedMotion": true
+  "visualizationTypes": [
+    {
+      "type": "dashboard",
+      "description": "Advanced analytics dashboard visualization",
+      "psychologicalTriggers": ["authority", "socialProof"],
+      "variants": ["glass", "subtle", "standard", "dark"],
+      "colorSchemes": ["primary", "secondary", "authority", "identity", "exclusive"]
+    },
+    {
+      "type": "chart",
+      "description": "Data visualization with psychological impact",
+      "psychologicalTriggers": ["cognitiveDissonance", "authority"],
+      "variants": ["glass", "subtle", "standard", "dark"],
+      "colorSchemes": ["primary", "secondary", "authority", "identity", "exclusive"]
+    },
+    {
+      "type": "analysis",
+      "description": "Content analysis wave visualization",
+      "psychologicalTriggers": ["cognitiveDissonance", "authority"],
+      "variants": ["glass", "subtle", "standard", "dark"],
+      "colorSchemes": ["primary", "secondary", "authority", "identity", "exclusive"]
+    },
+    {
+      "type": "fallacy",
+      "description": "Quality fallacy visualization",
+      "psychologicalTriggers": ["cognitiveDissonance", "identityReinforcement"],
+      "variants": ["glass", "subtle", "standard", "dark"],
+      "colorSchemes": ["primary", "secondary", "authority", "identity", "exclusive"]
+    },
+    {
+      "type": "logo",
+      "description": "IPP.TOOLS logo visualization",
+      "psychologicalTriggers": ["identityReinforcement", "authority"],
+      "variants": ["standard", "white", "dark"],
+      "colorSchemes": ["primary", "secondary", "authority", "identity", "exclusive"]
+    },
+    {
+      "type": "error",
+      "description": "Error visualization with cognitive gap",
+      "psychologicalTriggers": ["cognitiveDissonance", "curiosity"],
+      "variants": ["standard", "dark"],
+      "colorSchemes": ["primary", "secondary", "authority", "identity", "exclusive"]
+    },
+    {
+      "type": "particles",
+      "description": "Particle visualization for backgrounds",
+      "psychologicalTriggers": ["subtleMovement", "pattern"],
+      "variants": ["subtle", "standard", "dark"],
+      "colorSchemes": ["primary", "secondary", "authority", "identity", "exclusive", "warning"]
+    }
+  ],
+  "psychologicalPatterns": {
+    "authority": {
+      "description": "Creates immediate contextual expertise signals",
+      "visualCues": ["precision", "structure", "data-richness"],
+      "colorPreference": "authority",
+      "effectiveness": 0.82
+    },
+    "cognitiveDissonance": {
+      "description": "Creates information gaps the brain is compelled to resolve",
+      "visualCues": ["unexpected-patterns", "information-gaps", "pattern-interruption"],
+      "colorPreference": "primary",
+      "effectiveness": 0.87
+    },
+    "identityReinforcement": {
+      "description": "Activates tribal defense mechanisms and group identity",
+      "visualCues": ["in-group-signifiers", "shared-symbols", "tribal-markers"],
+      "colorPreference": "identity",
+      "effectiveness": 0.79
+    },
+    "socialProof": {
+      "description": "Leverages herd behavior and consensus validation",
+      "visualCues": ["metrics", "testimonials", "crowd-indicators"],
+      "colorPreference": "secondary",
+      "effectiveness": 0.73
+    },
+    "scarcity": {
+      "description": "Triggers loss aversion and urgency",
+      "visualCues": ["limited-availability", "countdown", "fading-elements"],
+      "colorPreference": "warning",
+      "effectiveness": 0.78
+    },
+    "curiosity": {
+      "description": "Creates information-seeking behavior through partial revelation",
+      "visualCues": ["partial-patterns", "progressive-disclosure", "mystery-elements"],
+      "colorPreference": "exclusive",
+      "effectiveness": 0.81
+    }
   },
-  "conversionTracking": {
-    "enabled": true,
-    "triggerTypes": ["view", "hover", "click"],
-    "integrations": ["analytics", "metrics", "eventBus"]
+  "colorSchemes": {
+    "primary": {
+      "main": "#5468ff",
+      "light": "#7d8bff",
+      "dark": "#3a4eef",
+      "gradient": ["#5468ff", "#8400ff"]
+    },
+    "secondary": {
+      "main": "#8400ff",
+      "light": "#9b33ff",
+      "dark": "#6800cc",
+      "gradient": ["#8400ff", "#5468ff"]
+    },
+    "authority": {
+      "main": "#0ea5e9",
+      "light": "#38bdf8",
+      "dark": "#0284c7",
+      "gradient": ["#0ea5e9", "#2563eb"]
+    },
+    "identity": {
+      "main": "#f59e0b",
+      "light": "#fbbf24",
+      "dark": "#d97706",
+      "gradient": ["#f59e0b", "#ef4444"]
+    },
+    "exclusive": {
+      "main": "#8b5cf6",
+      "light": "#a78bfa",
+      "dark": "#7c3aed",
+      "gradient": ["#8b5cf6", "#ec4899"]
+    },
+    "warning": {
+      "main": "#f59e0b",
+      "light": "#fbbf24",
+      "dark": "#d97706",
+      "gradient": ["#f59e0b", "#fb7185"]
+    }
   }
 }
