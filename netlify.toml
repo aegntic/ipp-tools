@@ -1,32 +1,20 @@
 # Main Netlify configuration for the IPP.TOOLS ecosystem
-# This file defines build settings, redirects, and environment variables
-# for the multi-domain architecture
 
-# Global build settings (for monorepo)
 [build]
   base = "/"
-  command = "node scripts/deploy.js"
+  command = "npm install && npm run build:ipp"
   publish = "sites/ipp-main/dist"
 
-# Production context
 [context.production]
-  environment = { NODE_ENV = "production", TRACKING_ENABLED = "true", GENERATE_VISUALIZATIONS = "true" }
+  environment = { NODE_ENV = "production", TRACKING_ENABLED = "true", GENERATE_VISUALIZATIONS = "true", SITE_DOMAIN = "ipp.tools", PRIMARY_COLOR = "#5468ff", FRAMEWORK_TYPE = "main" }
 
-# Staging/development context
 [context.staging]
   environment = { NODE_ENV = "staging", TRACKING_ENABLED = "true", STAGING_INDICATOR = "true", GENERATE_VISUALIZATIONS = "true" }
 
-# Branch-specific context for development
 [context.branch-deploy]
   environment = { NODE_ENV = "development", TRACKING_ENABLED = "false", GENERATE_VISUALIZATIONS = "true" }
 
-# Domain-specific environment variables - main domain (ipp.tools)
-[context.production.environment]
-  SITE_DOMAIN = "ipp.tools"
-  PRIMARY_COLOR = "#5468ff"
-  FRAMEWORK_TYPE = "main"
-
-# CascadeVibe domain - Custom domain setup
+# Domain-specific redirects for cross-domain routing
 [[redirects]]
   from = "https://ipp.tools/frameworks/cascadevibe/*"
   to = "https://cascadevibe.com/:splat"
