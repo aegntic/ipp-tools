@@ -1,0 +1,168 @@
+/* 
+   Header Component CSS
+   Optimized for psychological authority positioning
+*/
+
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.98);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.05);
+  padding: 1.5rem 0;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: padding 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.site-header.scrolled {
+  padding: 1rem 0;
+  box-shadow: 0 4px 6px rgba(15, 23, 42, 0.05), 0 2px 4px rgba(15, 23, 42, 0.05);
+}
+
+.site-header.minimal {
+  background-color: rgba(255, 255, 255, 0.95);
+}
+
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Logo Styling */
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.main-logo {
+  font-size: 2.4rem;
+  font-weight: 800;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  letter-spacing: -0.5px;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.framework-logo {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--primary);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.logo:hover .main-logo,
+.logo:hover .framework-logo {
+  transform: scale(1.05);
+}
+
+/* Navigation */
+.main-nav {
+  display: flex;
+  align-items: center;
+}
+
+.main-nav ul {
+  display: flex;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+.main-nav a {
+  color: var(--gray);
+  font-weight: 500;
+  font-size: 1.6rem;
+  padding: 0.75rem 0.5rem;
+  position: relative;
+  transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.main-nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background-color: var(--primary);
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.main-nav a:hover {
+  color: var(--primary);
+}
+
+.main-nav a:hover::after {
+  width: 100%;
+}
+
+/* Header CTA Button */
+.header-cta .btn {
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.header-cta .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(84, 104, 255, 0.25);
+}
+
+/* Mobile Navigation (for future implementation) */
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 2.4rem;
+  color: var(--gray);
+  cursor: pointer;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+  .main-nav {
+    display: none; /* Hide the main nav on mobile */
+  }
+  
+  .mobile-menu-toggle {
+    display: block;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-logo,
+  .framework-logo {
+    font-size: 2rem;
+  }
+  
+  .header-cta .btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 1.4rem;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .site-header {
+    background-color: rgba(15, 23, 42, 0.95);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .site-header.minimal {
+    background-color: rgba(15, 23, 42, 0.9);
+  }
+  
+  .main-nav a {
+    color: var(--gray-lighter);
+  }
+}
