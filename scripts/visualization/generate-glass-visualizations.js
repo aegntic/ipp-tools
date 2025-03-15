@@ -456,7 +456,7 @@ async function generateFallacyVisualization(svg, variant, colorScheme) {
   svg.rect(800, 600).fill(bgColor);
   
   // Create title with strong cognitive dissonance
-  svg.text('The Quality Fallacy: Why "Just Create Great Content" is Failing')
+  svg.text('The Quality Fallacy: Why \"Just Create Great Content\" is Failing')
     .font({
       family: 'Arial, sans-serif',
       size: 24,
@@ -530,7 +530,7 @@ async function generateErrorVisualization(svg, variant, colorScheme) {
   svg.rect(800, 600).fill(bgColor);
   
   // Create cognitive gap title
-  svg.text('You've Discovered A Cognitive Gap')
+  svg.text('You\'ve Discovered A Cognitive Gap')
     .font({
       family: 'Arial, sans-serif',
       size: 32,
@@ -596,7 +596,7 @@ async function generateErrorVisualization(svg, variant, colorScheme) {
   }
   
   // Subtext with identity reinforcement
-  svg.text('The path you're looking for doesn't exist, but like any elite creator, you can quickly pivot to a new opportunity.')
+  svg.text('The path you\'re looking for doesn\'t exist, but like any elite creator, you can quickly pivot to a new opportunity.')
     .font({
       family: 'Arial, sans-serif',
       size: 16
