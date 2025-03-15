@@ -152,6 +152,7 @@ async function generateVisualizations() {
 function generateDashboardVisualization(variant, colorScheme) {
   // Ensure colorScheme is defined with fallbacks
   colorScheme = colorScheme || colorSchemes.primary;
+  variant = variant || 'standard'; // Add default variant value
   
   // Background colors based on variant
   const bgColor = variant === 'dark' ? '#0f172a' : '#f8f9fa';
@@ -227,6 +228,7 @@ function generateDashboardVisualization(variant, colorScheme) {
 function generateChartVisualization(variant, colorScheme) {
   // Ensure colorScheme is defined with fallbacks
   colorScheme = colorScheme || colorSchemes.primary;
+  variant = variant || 'standard'; // Add default variant value
   
   // Background colors based on variant
   const bgColor = variant === 'dark' ? '#0f172a' : '#f8f9fa';
@@ -282,6 +284,7 @@ function generateChartVisualization(variant, colorScheme) {
 function generateErrorVisualization(variant, colorScheme) {
   // Ensure colorScheme is defined with fallbacks
   colorScheme = colorScheme || colorSchemes.primary;
+  variant = variant || 'standard'; // Add default variant value
   
   // Background colors based on variant
   const bgColor = variant === 'dark' ? '#0f172a' : '#f8f9fa';
@@ -341,6 +344,7 @@ function generateErrorVisualization(variant, colorScheme) {
 function generateLogoVisualization(variant, colorScheme) {
   // Ensure colorScheme is defined with fallbacks
   colorScheme = colorScheme || colorSchemes.primary;
+  variant = variant || 'standard'; // Add default variant value
   
   // Background colors based on variant
   const textColor = variant === 'dark' ? '#f1f5f9' : 
