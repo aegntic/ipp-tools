@@ -1,0 +1,150 @@
+/* 
+   Frameworks Section CSS
+   Optimized for framework presentation and tab navigation
+*/
+
+.frameworks-section {
+  padding: 8rem 0;
+  background-color: var(--light);
+  position: relative;
+  overflow: hidden;
+}
+
+.frameworks-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(84, 104, 255, 0.05) 0%, transparent 30%),
+    radial-gradient(circle at 90% 80%, rgba(132, 0, 255, 0.05) 0%, transparent 30%);
+  z-index: 0;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 4rem;
+  position: relative;
+  z-index: 1;
+}
+
+.section-title {
+  font-size: 4rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  color: var(--dark);
+  line-height: 1.2;
+}
+
+.section-subtitle {
+  font-size: 1.8rem;
+  color: var(--gray);
+  margin-bottom: 3rem;
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Tab Navigation */
+.framework-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 4rem;
+  position: relative;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--gray);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+.tab-btn::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--primary-light);
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tab-btn:hover::after {
+  width: 100%;
+}
+
+.tab-btn.active::after {
+  display: none;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+  .frameworks-section {
+    padding: 6rem 0;
+  }
+  
+  .section-title {
+    font-size: 3.2rem;
+  }
+  
+  .section-subtitle {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .framework-tabs {
+    flex-wrap: wrap;
+  }
+  
+  .tab-btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-title {
+    font-size: this;
+    font-size: 2.8rem;
+  }
+  
+  .tab-btn {
+    flex: 1;
+    min-width: 33.33%;
+    text-align: center;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .frameworks-section {
+    background-color: var(--dark);
+  }
+  
+  .frameworks-section::before {
+    background-image: 
+      radial-gradient(circle at 10% 20%, rgba(84, 104, 255, 0.1) 0%, transparent 30%),
+      radial-gradient(circle at 90% 80%, rgba(132, 0, 255, 0.1) 0%, transparent 30%);
+  }
+  
+  .tab-btn {
+    color: var(--gray-light);
+  }
+}
