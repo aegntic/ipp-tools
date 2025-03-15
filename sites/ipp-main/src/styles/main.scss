@@ -1,0 +1,236 @@
+/*
+   IPP.TOOLS Main Stylesheet
+   The 2025 Design System that creates UNSTOPPABLE psychological momentum
+*/
+
+// Import design tokens
+@import './tokens/colors';
+@import './tokens/typography';
+@import './tokens/spacing';
+@import './tokens/borders';
+@import './tokens/shadows';
+@import './tokens/animations';
+@import './tokens/z-index';
+
+// Import base styles
+@import './base/reset';
+@import './base/typography';
+@import './base/layout';
+@import './base/utilities';
+
+// Import components
+@import './components/buttons';
+@import './components/cards';
+@import './components/forms';
+@import './components/navigation';
+@import './components/modals';
+@import './components/testimonials';
+@import './components/stats';
+@import './components/countdown';
+@import './components/visualizations';
+
+// Import layouts
+@import './layouts/header';
+@import './layouts/footer';
+@import './layouts/grid';
+@import './layouts/sections';
+
+// Import pages
+@import './pages/home';
+@import './pages/frameworks';
+@import './pages/waitlist';
+@import './pages/not-found';
+
+/* Root Variables */
+:root {
+  /* Primary colors */
+  --primary: #{$primary};
+  --primary-light: #{$primary-light};
+  --primary-dark: #{$primary-dark};
+  --primary-gradient: #{$primary-gradient};
+  
+  /* Secondary colors */
+  --secondary: #{$secondary};
+  --secondary-light: #{$secondary-light};
+  --secondary-dark: #{$secondary-dark};
+  
+  /* Neutral colors */
+  --dark: #{$dark};
+  --dark-secondary: #{$dark-secondary};
+  --gray: #{$gray};
+  --gray-light: #{$gray-light};
+  --gray-lighter: #{$gray-lighter};
+  --light: #{$light};
+  --white: #{$white};
+  
+  /* Status colors */
+  --success: #{$success};
+  --warning: #{$warning};
+  --danger: #{$danger};
+  --info: #{$info};
+  
+  /* Typography */
+  --font-primary: #{$font-primary};
+  --font-heading: #{$font-heading};
+  
+  /* Spacing */
+  --space-3xs: #{$space-3xs};
+  --space-2xs: #{$space-2xs};
+  --space-xs: #{$space-xs};
+  --space-s: #{$space-s};
+  --space-m: #{$space-m};
+  --space-l: #{$space-l};
+  --space-xl: #{$space-xl};
+  --space-2xl: #{$space-2xl};
+  --space-3xl: #{$space-3xl};
+  
+  /* Border Radius */
+  --radius-xs: #{$radius-xs};
+  --radius-s: #{$radius-s};
+  --radius-m: #{$radius-m};
+  --radius-l: #{$radius-l};
+  --radius-xl: #{$radius-xl};
+  --radius-full: #{$radius-full};
+  
+  /* Shadows */
+  --shadow-sm: #{$shadow-sm};
+  --shadow-md: #{$shadow-md};
+  --shadow-lg: #{$shadow-lg};
+  --shadow-xl: #{$shadow-xl};
+  
+  /* Transitions */
+  --transition-fast: #{$transition-fast};
+  --transition-normal: #{$transition-normal};
+  --transition-slow: #{$transition-slow};
+  
+  /* Z-index layers */
+  --z-below: #{$z-below};
+  --z-normal: #{$z-normal};
+  --z-above: #{$z-above};
+  --z-menu: #{$z-menu};
+  --z-modal: #{$z-modal};
+  --z-toast: #{$z-toast};
+}
+
+/* Main Container Styles */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  
+  &.loaded {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.main-content {
+  flex: 1;
+}
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: 128rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-l);
+  padding-right: var(--space-l);
+}
+
+/* Text Gradient Effect */
+.text-gradient {
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+
+/* Psychological Triggers & Advanced Effects */
+
+// 1. Cognitive Dissonance Activation
+.cognitive-gap {
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 2px;
+    background: var(--primary-gradient);
+    transform: scaleX(0.7);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  &:hover::after {
+    transform: scaleX(1);
+  }
+}
+
+// 2. Identity Reinforcement
+.identity-marker {
+  font-weight: 700;
+  color: var(--primary);
+  transition: color 0.3s ease;
+  
+  &:hover {
+    color: var(--primary-dark);
+  }
+}
+
+// 3. Authority Positioning
+.authority-block {
+  border-left: 3px solid var(--primary);
+  padding-left: var(--space-s);
+  font-style: italic;
+  margin: var(--space-m) 0;
+}
+
+// 4. Subtle Movement Animations
+@keyframes subtle-float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0); }
+}
+
+.subtle-float {
+  animation: subtle-float 6s infinite ease-in-out;
+}
+
+// 5. Strategic Hover State
+.strategic-hover {
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.2) 50%,
+      transparent 100%
+    );
+    transition: left 0.5s ease-in-out;
+    z-index: 1;
+  }
+  
+  &:hover::before {
+    left: 100%;
+  }
+}
+
+// Media Queries
+@import './base/media-queries';
