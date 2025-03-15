@@ -34,6 +34,23 @@ The platform leverages advanced psychological triggers:
 - **Sustained Engagement Loops**: Self-reinforcing systems that maintain relevance beyond initial posting timeframes
 - **Authority Positioning Framework**: Evolutionary psychology techniques for establishing contextual expertise
 
+## Glass Morphic Visualization System
+
+The platform includes an advanced visualization system that generates psychologically optimized SVG-based UI components:
+
+- **Build-time Asset Generation**: Visualizations are dynamically generated during the build process
+- **Psychological Trigger Integration**: Visualizations leverage cognitive triggers for maximum impact
+- **Theming System**: Automatic generation of light/dark variants for all visualizations
+- **Conversion Tracking**: Built-in event tracking on visualization interactions
+
+See [VISUALIZATION-SYSTEM.md](docs/VISUALIZATION-SYSTEM.md) for complete documentation on implementing and extending the visualization system.
+
+Key visualization types:
+
+- **Dashboard**: Advanced analytics dashboard visualization (Authority, Social Proof)
+- **Analysis**: Content analysis wave visualization (Cognitive Dissonance, Authority)
+- **Fallacy**: Quality fallacy visualization (Cognitive Dissonance, Identity Reinforcement)
+
 ## Getting Started
 
 ```bash
@@ -46,6 +63,9 @@ npm install
 
 # Start development server
 npm run dev
+
+# Generate visualization assets
+npm run generate:visualizations
 
 # Build all sites
 npm run build:all
@@ -60,6 +80,13 @@ npm run build:all
 - `npm run build:vibecascade` - Build VibeCascade framework site
 - `npm run build:all` - Build all sites for production deployment
 
+## Visualization Commands
+
+- `npm run generate:visualizations` - Generate all visualization assets
+- `npm run generate:visualizations:ipp` - Generate visualization assets for IPP.TOOLS hub
+- `npm run generate:visualizations:cascadevibe` - Generate visualization assets for VibeCascade
+- `npm run generate:visualizations:all` - Generate all visualization assets for all sites
+
 ## Deployment
 
 This repository is configured for deployment via Netlify with multi-domain support. The `netlify.toml` file contains the complete deployment configuration, including:
@@ -69,6 +96,7 @@ This repository is configured for deployment via Netlify with multi-domain suppo
 - Environment variable configuration
 - Security headers
 - Caching policies
+- Visualization generation integration
 
 ## Key Performance Metrics
 
@@ -78,3 +106,4 @@ This platform is optimized for the following conversion metrics:
 - **Cross-Framework Attribution**: 35%+ of traffic exploring multiple frameworks
 - **Engagement Depth**: 67%+ scroll depth across framework pages
 - **Return Rate**: 25%+ visitors returning within 7 days
+- **Visualization Interaction**: 45%+ visitors engage with psychological visualizations
