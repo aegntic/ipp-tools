@@ -1,0 +1,105 @@
+name: Glass Morphic Visualization Generation
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'visualization-config.json'
+      - 'scripts/visualization/**'
+      - '.github/workflows/glass-morphic-visualizations.yml'
+  workflow_dispatch:
+    inputs:
+      output_directory:
+        description: 'Output directory for visualizations'
+        default: 'public/assets/visualizations'
+        required: true
+      primary_color:
+        description: 'Primary color for visualizations (hex)'
+        default: '#5468ff'
+        required: false
+      secondary_color:
+        description: 'Secondary color for visualizations (hex)'
+        default: '#8400ff'
+        required: false
+
+jobs:
+  generate-visualizations:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Create visualization directories
+        run: |
+          # Create base directories for all sites
+          mkdir -p sites/ipp-main/public/assets/visualizations
+          mkdir -p sites/cascadevibe/public/assets/visualizations
+          
+          # Create directory specified in workflow_dispatch if provided
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ ! -z "${{ github.event.inputs.output_directory }}" ]; then
+            mkdir -p ${{ github.event.inputs.output_directory }}
+          fi
+      
+      - name: Override visualization config if colors provided
+        if: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.primary_color != '' || github.event.inputs.secondary_color != '') }}
+        run: |
+          # Create temporary config with overridden colors
+          jq --arg primary "${{ github.event.inputs.primary_color || '#5468ff' }}" \
+             --arg secondary "${{ github.event.inputs.secondary_color || '#8400ff' }}" \
+             '.colorPrimary = $primary | .colorSecondary = $secondary' \
+             visualization-config.json > visualization-config.temp.json
+          
+          mv visualization-config.temp.json visualization-config.json
+      
+      - name: Generate glass morphic visualizations
+        run: |
+          echo "🚀 Generating Glass Morphic Visualizations..."
+          node scripts/visualization/generate-glass-visualizations.js
+          
+          # Also generate for each site directory
+          node scripts/visualization/generate-glass-visualizations.js -o sites/ipp-main/public/assets/visualizations
+          node scripts/visualization/generate-glass-visualizations.js -o sites/cascadevibe/public/assets/visualizations
+          
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ ! -z "${{ github.event.inputs.output_directory }}" ]; then
+            node scripts/visualization/generate-glass-visualizations.js -o ${{ github.event.inputs.output_directory }}
+          fi
+      
+      - name: Verify generation
+        run: |
+          # Check if files were generated
+          if [ -f "public/assets/visualizations/dashboard.svg" ] && \
+             [ -f "public/assets/visualizations/analysis.svg" ] && \
+             [ -f "public/assets/visualizations/fallacy.svg" ]; then
+            echo "✅ Visualization generation successful!"
+          else
+            echo "❌ Visualization generation failed!"
+            exit 1
+          fi
+      
+      - name: Create .gitignore entry for visualization directories
+        run: |
+          # Create or update .gitignore to exclude visualization directories
+          if ! grep -q "# Generated visualization assets" .gitignore; then
+            echo "" >> .gitignore
+            echo "# Generated visualization assets" >> .gitignore
+            echo "public/assets/visualizations/" >> .gitignore
+            echo "sites/*/public/assets/visualizations/" >> .gitignore
+          fi
+      
+      - name: Commit and push .gitignore changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .gitignore
+          git commit -m "Update .gitignore to exclude generated visualization assets" || echo "No changes to commit"
+          git push
