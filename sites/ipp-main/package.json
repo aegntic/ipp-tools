@@ -1,0 +1,23 @@
+{
+  "name": "ipp-main",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite --config ../../vite.config.ipp.js",
+    "build": "vite build --config ../../vite.config.ipp.js",
+    "preview": "vite preview --config ../../vite.config.ipp.js",
+    "lint": "eslint src --ext js,jsx"
+  },
+  "dependencies": {
+    "@ipp-tools/core": "^1.0.0",
+    "@ipp-tools/ui": "^1.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.3"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.1",
+    "sass": "^1.71.1",
+    "vite": "^5.1.4"
+  }
+}
