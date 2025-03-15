@@ -5,5 +5,19 @@
   "packages": [
     "packages/*",
     "sites/*"
-  ]
+  ],
+  "loglevel": "info",
+  "command": {
+    "version": {
+      "exact": true
+    },
+    "publish": {
+      "npmClient": "npm",
+      "allowBranch": ["main", "feature/*"],
+      "registry": "https://registry.npmjs.org/"
+    },
+    "bootstrap": {
+      "npmClientArgs": ["--no-package-lock"]
+    }
+  }
 }
