@@ -1,0 +1,288 @@
+/* 
+   Framework Card Component CSS
+   Psychologically optimized for maximum conversion rate
+*/
+
+.framework-card {
+  background-color: var(--white, #ffffff);
+  border-radius: var(--radius-l, 1rem);
+  box-shadow: var(--shadow-lg, 0 10px 15px -3px rgba(15, 23, 42, 0.05), 0 4px 6px -2px rgba(15, 23, 42, 0.025));
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.3s ease-out, box-shadow 0.3s ease-out, border-color 0.3s ease-out;
+  border: 1px solid rgba(15, 23, 42, 0.05);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Subtle glow effect on hover - creates perceived value */
+.framework-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 30px -10px rgba(15, 23, 42, 0.1);
+}
+
+/* Highlighted card styling - draws attention to featured framework */
+.framework-card.highlighted {
+  border-width: 2px;
+  transform: scale(1.03);
+  z-index: 1;
+}
+
+/* Status badge - creates exclusivity */
+.framework-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: var(--primary, #5468ff);
+  color: #ffffff;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  z-index: 1;
+}
+
+/* Framework header section */
+.framework-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.05);
+}
+
+.framework-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--dark, #0f172a);
+}
+
+.framework-subtitle {
+  font-size: 1rem;
+  color: var(--gray, #334155);
+  line-height: 1.5;
+}
+
+/* Main content area */
+.framework-content {
+  padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Feature list - benefit-focused structure */
+.framework-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+}
+
+.framework-features li {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  align-items: flex-start;
+  color: var(--gray, #334155);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.feature-check-icon {
+  width: 1.125rem;
+  height: 1.125rem;
+  background-color: rgba(84, 104, 255, 0.1);
+  border-radius: 50%;
+  flex-shrink: 0;
+  position: relative;
+  margin-top: 0.125rem;
+}
+
+.feature-check-icon::before {
+  content: '';
+  position: absolute;
+  width: 0.375rem;
+  height: 0.625rem;
+  border-right: 2px solid var(--primary, #5468ff);
+  border-bottom: 2px solid var(--primary, #5468ff);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%) rotate(45deg);
+}
+
+/* Pricing section */
+.framework-pricing {
+  margin-bottom: 1.25rem;
+  text-align: center;
+}
+
+.price {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--dark, #0f172a);
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.price-note {
+  font-size: 0.875rem;
+  color: var(--gray-light, #64748b);
+}
+
+.launch-date {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--warning, #f59e0b);
+}
+
+/* Scarcity signal - creates urgency */
+.scarcity-signal {
+  margin-bottom: 1.25rem;
+}
+
+.spots-bar {
+  height: 0.5rem;
+  background-color: rgba(15, 23, 42, 0.05);
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.spots-progress {
+  height: 100%;
+  background-color: var(--primary, #5468ff);
+  border-radius: 9999px;
+  transition: width 0.5s ease-out;
+}
+
+.spots-text {
+  font-size: 0.875rem;
+  color: var(--gray, #334155);
+  text-align: center;
+  margin: 0;
+}
+
+.spots-count {
+  font-weight: 700;
+  color: var(--danger, #ef4444);
+}
+
+/* Button styling */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.2s ease-out;
+  text-align: center;
+  border: none;
+  outline: none;
+  margin-top: auto;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(15, 23, 42, 0.1);
+}
+
+.btn-primary {
+  background-color: var(--primary, #5468ff);
+  color: #ffffff;
+  border: 2px solid var(--primary, #5468ff);
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 2px solid var(--primary, #5468ff);
+  color: var(--primary, #5468ff);
+}
+
+.btn-block {
+  display: flex;
+  width: 100%;
+}
+
+/* Shimmer effect for highlighted cards */
+.shimmer-effect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.03) 30%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.03) 70%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  z-index: 0;
+  pointer-events: none;
+  animation: shimmer 5s infinite linear;
+  transform: translateX(-100%);
+}
+
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
+
+/* Framework-type-specific styling */
+.framework-card.active .framework-badge {
+  background-color: var(--primary, #5468ff);
+}
+
+.framework-card.waitlist .framework-badge {
+  background-color: var(--warning, #f59e0b);
+}
+
+.framework-card.free .framework-badge {
+  background-color: var(--success, #10b981);
+}
+
+/* Subtle activation animation on card load - enhances attention capture */
+@keyframes card-activate {
+  0% { 
+    opacity: 0; 
+    transform: translateY(10px);
+  }
+  100% { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.framework-card {
+  animation: card-activate 0.5s ease-out forwards;
+}
+
+/* Visual emphasis specific to framework status */
+.framework-card.active {
+  box-shadow: 0 0 0 2px rgba(84, 104, 255, 0.1), 0 10px 15px -3px rgba(15, 23, 42, 0.05);
+}
+
+.framework-card.waitlist {
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.1), 0 10px 15px -3px rgba(15, 23, 42, 0.05);
+}
+
+.framework-card.free {
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1), 0 10px 15px -3px rgba(15, 23, 42, 0.05);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .framework-title {
+    font-size: 1.25rem;
+  }
+  
+  .price {
+    font-size: 1.75rem;
+  }
+}
