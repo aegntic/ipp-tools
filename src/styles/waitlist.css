@@ -1,0 +1,227 @@
+/* 
+   Waitlist Form Component CSS
+   Optimized for maximum conversion with psychological triggers
+*/
+
+.waitlist-section {
+  text-align: center;
+  padding: 5rem 2rem;
+  background-color: var(--light);
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.waitlist-section h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: var(--dark);
+  line-height: 1.2;
+}
+
+.waitlist-section p {
+  font-size: 1.8rem;
+  color: var(--gray);
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+/* Social Proof Styling */
+.social-proof {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background-color: rgba(84, 104, 255, 0.05);
+  border-radius: 0.5rem;
+}
+
+.social-proof p {
+  font-weight: 600;
+  margin: 0;
+  color: var(--dark);
+}
+
+#signup-count {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+/* Scarcity Indicators */
+.scarcity {
+  margin: 2rem 0;
+  color: var(--dark);
+}
+
+.scarcity p {
+  font-weight: 600;
+  margin: 0.5rem 0;
+}
+
+#countdown {
+  color: var(--primary);
+  font-weight: 700;
+  font-family: monospace;
+  font-size: 2.2rem;
+  background-color: rgba(84, 104, 255, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 0.4rem;
+  display: inline-block;
+  margin: 0 0.5rem;
+  
+  /* Subtle pulsing animation to draw attention */
+  animation: pulse 2s infinite;
+}
+
+.spots-count {
+  color: var(--danger);
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+/* Form Styling */
+#waitlist-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 500px;
+  margin: 2.5rem auto;
+}
+
+#waitlist-form input {
+  padding: 1.5rem;
+  font-size: 1.6rem;
+  border: 2px solid rgba(15, 23, 42, 0.1);
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+#waitlist-form input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(84, 104, 255, 0.2);
+  outline: none;
+  transform: scale(1.02); /* Subtle zoom effect for focus */
+}
+
+#waitlist-form button {
+  padding: 1.5rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: white;
+  background: var(--primary-gradient);
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(84, 104, 255, 0.2);
+}
+
+#waitlist-form button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 7px 14px rgba(84, 104, 255, 0.25);
+}
+
+#waitlist-form button:active {
+  transform: translateY(1px);
+}
+
+/* Success State */
+#success-state {
+  padding: 2rem;
+  background-color: rgba(16, 185, 129, 0.05);
+  border-radius: 0.5rem;
+  border-left: 4px solid var(--success);
+  text-align: left;
+}
+
+#success-state h2 {
+  color: var(--success);
+  font-size: 2.4rem;
+  margin-bottom: 1rem;
+}
+
+.next-steps {
+  margin-top: 2.5rem;
+}
+
+.next-steps h3 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: var(--dark);
+}
+
+.next-steps ol {
+  list-style-position: inside;
+  padding-left: 1rem;
+}
+
+.next-steps li {
+  margin-bottom: 1rem;
+  color: var(--gray);
+  font-size: 1.6rem;
+}
+
+/* Animations */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(84, 104, 255, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(84, 104, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(84, 104, 255, 0);
+  }
+}
+
+/* Responsive Styling */
+@media (min-width: 768px) {
+  #waitlist-form {
+    flex-direction: row;
+  }
+  
+  #waitlist-form input {
+    flex: 1;
+  }
+  
+  #waitlist-form button {
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .waitlist-section h1 {
+    font-size: 2.4rem;
+  }
+  
+  .waitlist-section p {
+    font-size: 1.6rem;
+  }
+  
+  #signup-count,
+  .spots-count,
+  #countdown {
+    font-size: 1.8rem;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .waitlist-section {
+    background-color: var(--dark-secondary);
+  }
+  
+  .social-proof {
+    background-color: rgba(84, 104, 255, 0.15);
+  }
+  
+  #success-state {
+    background-color: rgba(16, 185, 129, 0.15);
+  }
+  
+  #waitlist-form input {
+    background-color: var(--dark);
+    color: var(--light);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+}
