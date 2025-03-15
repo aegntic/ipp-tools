@@ -50,47 +50,71 @@ const config = siteConfig[site] || siteConfig['ipp.tools'];
 try {
   // Ensure required directories exist
   if (!fs.existsSync(config.directory)) {
-    console.error(`❌ Site directory not found: ${config.directory}`);
-    process.exit(1);
+    console.warn(`⚠️ Site directory not found: ${config.directory}. Creating it...`);
+    try {
+      fs.mkdirSync(config.directory, { recursive: true });
+      console.log(`✅ Created site directory: ${config.directory}`);
+    } catch (dirError) {
+      console.error(`❌ Failed to create site directory: ${dirError.message}`);
+      process.exit(1);
+    }
   }
 
   // Create visualization output directory if it doesn't exist
   const visualizationDir = path.join(config.directory, 'public/assets/visualizations');
-  if (!fs.existsSync(visualizationDir)) {
-    fs.mkdirSync(visualizationDir, { recursive: true });
-    console.log(`✅ Created visualization directory: ${visualizationDir}`);
+  try {
+    if (!fs.existsSync(visualizationDir)) {
+      fs.mkdirSync(visualizationDir, { recursive: true });
+      console.log(`✅ Created visualization directory: ${visualizationDir}`);
+    }
+  } catch (visualizationDirError) {
+    console.error(`⚠️ Warning: Could not create visualization directory: ${visualizationDirError.message}`);
+    console.log('Will attempt to continue with installation...');
   }
 
   // Install dependencies
   console.log('📦 Installing dependencies...');
-  execSync('npm install', { stdio: 'inherit' });
+  try {
+    execSync('npm install', { stdio: 'inherit' });
+  } catch (installError) {
+    console.error(`❌ Error installing dependencies: ${installError.message}`);
+    console.log('Will attempt to continue with build...');
+  }
 
   // Generate visualizations first
   console.log('🎨 Generating visualizations...');
   try {
-    execSync('node scripts/visualization/generate-glass-visualizations.js -o ' + visualizationDir, { 
+    execSync(`node scripts/visualization/generate-glass-visualizations.js -o ${visualizationDir}`, { 
       stdio: 'inherit',
       env: { ...process.env, VISUALIZATION_OUTPUT_DIR: visualizationDir }
     });
     console.log('✅ Visualizations generated successfully');
-  } catch (error) {
+  } catch (visualizationError) {
     console.warn('⚠️ Warning: Visualization generation encountered issues, but proceeding with build');
+    console.error(`Visualization error details: ${visualizationError.message}`);
   }
 
   // Build the site
   console.log(`🏗️ Building site with command: ${config.buildCommand}`);
-  execSync(config.buildCommand, { stdio: 'inherit' });
-
-  // If we get here, the build was successful
-  console.log(`✅ Build completed successfully. Output directory: ${config.outputDir}`);
+  try {
+    execSync(config.buildCommand, { stdio: 'inherit' });
+    console.log(`✅ Build completed successfully. Output directory: ${config.outputDir}`);
+  } catch (buildError) {
+    console.error(`❌ Build failed: ${buildError.message}`);
+    process.exit(1);
+  }
 
   // Copy the _redirects file if needed
   const redirectsSource = path.join(config.directory, '_redirects');
   const redirectsTarget = path.join(config.outputDir, '_redirects');
   
-  if (fs.existsSync(redirectsSource) && !fs.existsSync(redirectsTarget)) {
-    fs.copyFileSync(redirectsSource, redirectsTarget);
-    console.log('✅ Copied _redirects file');
+  try {
+    if (fs.existsSync(redirectsSource) && !fs.existsSync(redirectsTarget)) {
+      fs.copyFileSync(redirectsSource, redirectsTarget);
+      console.log('✅ Copied _redirects file');
+    }
+  } catch (redirectsError) {
+    console.warn(`⚠️ Warning: Could not copy _redirects file: ${redirectsError.message}`);
   }
 
   console.log('🚀 Deployment preparation complete!');
