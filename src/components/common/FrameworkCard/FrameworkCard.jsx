@@ -52,7 +52,7 @@ const FrameworkCard = ({
     dissonanceDelay: 1200,
     dissonanceIntensity: 'medium',
     autoResolve: true,
-    resolutionDelay:ra,
+    resolutionDelay: 6000,
     trackingCategory: `${trackingPrefix}_dissonance`,
     trackingAction: 'trigger'
   });
