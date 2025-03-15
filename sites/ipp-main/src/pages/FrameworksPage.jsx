@@ -1,332 +1,261 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import {
-  CognitiveDissonanceActivator,
-  IdentityReinforcementTrigger,
-  AuthorityPositioningTrigger
-} from '@ipp-tools/core';
-import { 
-  FrameworkCard,
-  PsychologicalVisualizer,
-  ComparisonTable
-} from '@ipp-tools/ui';
+import React, { useState, useEffect } from 'react';
+import { useCognitiveDissonance } from '@ipp-tools/core';
+import { FrameworkCard } from '@ipp-tools/ui';
 
-const FrameworksPage = () => {
-  const [activeTab, setActiveTab] = useState('all');
-  
-  // Framework data
-  const allFrameworks = [
+// Same framework data from HomePage - in a real app, this would be centralized
+const frameworksData = {
+  premium: [
     {
-      id: 'vibecascade',
-      name: "VibeCascade Framework",
-      description: "The psychological framework elite creators use to achieve exponential engagement growth",
-      status: "ACTIVE",
-      price: "$997",
-      url: "https://vibecascade.ipp.tools",
-      category: "premium",
+      id: 'cascadevibe',
+      title: 'VibeCascade Framework',
+      description: 'The psychological framework elite creators use to achieve exponential engagement growth',
+      status: 'ACTIVE',
+      price: '$997',
+      priceNote: 'one-time payment',
       features: [
-        "Advanced cognitive triggers that make it neurologically impossible for users not to engage",
-        "Algorithm-proof system based on psychological constants that all platforms reward",
-        "572% average engagement increase for implementing creators"
+        'Advanced cognitive triggers that make it neurologically impossible for users not to engage',
+        'Algorithm-proof system based on psychological constants that all platforms reward',
+        '572% average engagement increase for implementing creators'
       ],
-      colorScheme: "primary",
-      testimonials: [
-        {
-          name: "Michael J.",
-          role: "Finance Creator",
-          quote: "Implemented the framework on a Thursday. By Monday, my engagement was up 432%."
-        }
-      ],
-      metrics: [
-        { label: "Avg. Engagement Increase", value: "572%" },
-        { label: "Implementation Success", value: "97.8%" }
-      ]
-    },
+      buttonText: 'Access Framework',
+      buttonUrl: 'https://vibecascade.ipp.tools'
+    }
+  ],
+  upcoming: [
     {
       id: 'neuralnarrative',
-      name: "NeuralNarrative",
-      description: "Craft stories that bypass conscious filtering and speak directly to the limbic system",
-      status: "WAITLIST",
-      price: "$1,997",
-      expectedLaunch: "Q3 2025",
-      category: "upcoming",
+      title: 'NeuralNarrative',
+      description: 'Craft stories that bypass conscious filtering and speak directly to the limbic system',
+      status: 'COMING SOON',
+      price: '$1,997',
+      launchDate: 'Expected Q3 2025',
       features: [
-        "The exact narrative structures that create neural synchronization between creator and audience",
-        "Advanced psycholinguistic frameworks derived from 3.7M analyzed viral stories",
-        "Memory implantation techniques that make your content impossible to forget"
+        'The exact narrative structures that create neural synchronization between creator and audience',
+        'Advanced psycholinguistic frameworks derived from 3.7M analyzed viral stories',
+        'Memory implantation techniques that make your content impossible to forget'
       ],
-      colorScheme: "authority"
+      buttonText: 'Join Waitlist',
+      buttonUrl: '/waitlist/neuralnarrative'
     },
     {
       id: 'primalposition',
-      name: "PrimalPositioning",
-      description: "Evolutionary psychology-based positioning strategies that activate tribal defense mechanisms",
-      status: "WAITLIST",
-      price: "$1,497",
-      expectedLaunch: "Q2 2025",
-      category: "upcoming",
+      title: 'PrimalPositioning',
+      description: 'Evolutionary psychology-based positioning strategies that activate tribal defense mechanisms',
+      status: 'COMING SOON',
+      price: '$1,497',
+      launchDate: 'Expected Q2 2025',
       features: [
-        "The exact positioning framework that turns audience members into tribal defenders",
-        "Identity-resonance techniques that create unconscious loyalty and advocacy",
-        "Competitor neutralization patterns based on evolutionary threat response"
+        'The exact positioning framework that turns audience members into tribal defenders',
+        'Identity-resonance techniques that create unconscious loyalty and advocacy',
+        'Competitor neutralization patterns based on evolutionary threat response'
       ],
-      colorScheme: "identity"
+      buttonText: 'Join Waitlist',
+      buttonUrl: '/waitlist/primalposition'
     },
     {
       id: 'quantumconversion',
-      name: "QuantumConversion",
-      description: "Multi-dimensional conversion frameworks that work across all psychological profiles",
-      status: "WAITLIST",
-      price: "$2,497",
-      expectedLaunch: "Q3 2025",
-      category: "upcoming",
+      title: 'QuantumConversion',
+      description: 'Multi-dimensional conversion frameworks that work across all psychological profiles',
+      status: 'COMING SOON',
+      price: '$2,497',
+      launchDate: 'Expected Q3 2025',
       features: [
-        "The elite persuasion architecture used by the world's highest-converting offers",
-        "Advanced probability field manipulation for 247% higher conversion rates",
-        "Pattern interruption sequences that make sales resistance neurologically impossible"
+        'The elite persuasion architecture used by the world's highest-converting offers',
+        'Advanced probability field manipulation for 247% higher conversion rates',
+        'Pattern interruption sequences that make sales resistance neurologically impossible'
       ],
-      colorScheme: "exclusive"
-    },
+      buttonText: 'Join Waitlist',
+      buttonUrl: '/waitlist/quantumconversion'
+    }
+  ],
+  free: [
     {
       id: 'algodecoder',
-      name: "AlgoDecoder",
-      description: "Decode the exact psychological patterns each social algorithm rewards",
-      status: "FREE",
-      price: "Free",
-      upsellTo: "VibeCascade Framework",
-      category: "free",
+      title: 'AlgoDecoder',
+      description: 'Decode the exact psychological patterns each social algorithm rewards',
+      status: 'FREE',
       features: [
-        "Basic algorithm analysis for one platform",
-        "Monthly report on platform changes",
-        "Simplified engagement pattern suggestions"
+        'Basic algorithm analysis for one platform',
+        'Monthly report on platform changes',
+        'Simplified engagement pattern suggestions'
       ],
-      colorScheme: "warning"
+      premiumFeatures: [
+        'Real-time algorithm change detection across all platforms',
+        'Custom pattern generation based on your specific content',
+        'Advanced psychological trigger mapping'
+      ],
+      buttonText: 'Join Waitlist',
+      buttonUrl: '/waitlist/algodecoder'
     },
     {
       id: 'neurocopy',
-      name: "NeuroCopy",
-      description: "Test your copy against the 17 neurological triggers that drive action",
-      status: "FREE",
-      price: "Free",
-      upsellTo: "QuantumConversion",
-      category: "free",
+      title: 'NeuroCopy',
+      description: 'Test your copy against the 17 neurological triggers that drive action',
+      status: 'FREE',
       features: [
-        "Basic neural engagement scoring",
-        "Analysis of 3 core triggers",
-        "Simple rewording suggestions"
+        'Basic neural engagement scoring',
+        'Analysis of 3 core triggers',
+        'Simple rewording suggestions'
       ],
-      colorScheme: "secondary"
+      premiumFeatures: [
+        'Full 17-trigger analysis with specific improvement recommendations',
+        'Psychological profile targeting options',
+        'Pattern matching against 50,000+ proven high-converting examples'
+      ],
+      buttonText: 'Join Waitlist',
+      buttonUrl: '/waitlist/neurocopy'
     },
     {
       id: 'identitymapper',
-      name: "IdentityMapper",
-      description: "Map the exact identity triggers that activate tribal responses in your audience",
-      status: "FREE",
-      price: "Free",
-      upsellTo: "PrimalPositioning",
-      category: "free",
+      title: 'IdentityMapper',
+      description: 'Map the exact identity triggers that activate tribal responses in your audience',
+      status: 'FREE',
       features: [
-        "Basic identity resonance analysis",
-        "Simple audience segment identification",
-        "Core belief mapping"
+        'Basic identity resonance analysis',
+        'Simple audience segment identification',
+        'Core belief mapping'
       ],
-      colorScheme: "identity"
+      premiumFeatures: [
+        'Full identity alignment architecture',
+        'Cross-tribal positioning strategies',
+        'Defense mechanism activation frameworks'
+      ],
+      buttonText: 'Join Waitlist',
+      buttonUrl: '/waitlist/identitymapper'
     }
-  ];
+  ]
+};
+
+const FrameworksPage = () => {
+  const [activeTab, setActiveTab] = useState('premium');
+  const { activateTrigger } = useCognitiveDissonance();
   
-  // Filter frameworks by active tab
-  const filteredFrameworks = activeTab === 'all' 
-    ? allFrameworks 
-    : allFrameworks.filter(framework => framework.category === activeTab);
-  
-  // Comparison table data for premium framework
-  const comparisonData = {
-    headers: [
-      { key: 'feature', label: 'Feature' },
-      { key: 'traditional', label: 'Traditional Approach' },
-      { key: 'vibecascade', label: 'VibeCascade Framework' }
-    ],
-    rows: [
-      {
-        feature: 'Engagement Approach',
-        traditional: 'Content quality focus',
-        vibecascade: 'Psychological triggers + quality'
-      },
-      {
-        feature: 'Algorithm Resilience',
-        traditional: 'Vulnerable to algorithm changes',
-        vibecascade: 'Based on psychological constants'
-      },
-      {
-        feature: 'Implementation Time',
-        traditional: '3-6 months trial and error',
-        vibecascade: 'Results within 7-14 days'
-      },
-      {
-        feature: 'Scientific Basis',
-        traditional: 'Anecdotal best practices',
-        vibecascade: 'Research-backed psychological frameworks'
-      },
-      {
-        feature: 'Success Rate',
-        traditional: '23% see significant improvement',
-        vibecascade: '97.8% implementation success rate'
-      }
-    ]
-  };
+  useEffect(() => {
+    // Activate psychological triggers
+    activateTrigger('cognitiveDissonance', 'medium');
+    activateTrigger('socialProof', 'high');
+    
+    // Track page view
+    if (window.ippTools?.trackPageView) {
+      window.ippTools.trackPageView('/frameworks', {
+        activeTab
+      });
+    }
+  }, [activateTrigger, activeTab]);
   
   return (
     <div className="frameworks-page">
-      <section className="page-hero">
-        <div className="container">
-          <CognitiveDissonanceActivator type="authority" intensity="high">
-            <h1 className="page-title">
-              Psychological Frameworks for <span className="text-gradient">Elite Digital Growth</span>
-            </h1>
-          </CognitiveDissonanceActivator>
-          
-          <IdentityReinforcementTrigger intensity="medium" identityType="creator">
-            <p className="page-subtitle">
-              Implement the exact psychological triggers used by the top 0.1% of creators and marketers for exponential engagement growth
-            </p>
-          </IdentityReinforcementTrigger>
+      <div className="container">
+        <div className="page-header">
+          <h1 className="page-title">Psychological Frameworks</h1>
+          <p className="page-description">
+            Based on extensive research and real-world validation across multiple platforms and niches,
+            our frameworks provide the advanced psychological patterns that drive exponential growth in 2025.
+          </p>
         </div>
-      </section>
-      
-      <section className="frameworks-section">
-        <div className="container">
-          <div className="frameworks-tabs">
-            <button 
-              className={`tab-btn ${activeTab === 'all' ? 'active' : ''}`}
-              onClick={() => setActiveTab('all')}
-            >
-              All Frameworks
-            </button>
-            <button 
-              className={`tab-btn ${activeTab === 'premium' ? 'active' : ''}`}
-              onClick={() => setActiveTab('premium')}
-            >
-              Premium Frameworks
-            </button>
-            <button 
-              className={`tab-btn ${activeTab === 'free' ? 'active' : ''}`}
-              onClick={() => setActiveTab('free')}
-            >
-              Free Tools
-            </button>
-            <button 
-              className={`tab-btn ${activeTab === 'upcoming' ? 'active' : ''}`}
-              onClick={() => setActiveTab('upcoming')}
-            >
-              Coming Soon
-            </button>
-          </div>
-          
-          <div className="frameworks-grid">
-            {filteredFrameworks.map((framework, index) => (
-              <FrameworkCard
-                key={framework.id}
-                framework={framework}
-                animationDelay={index * 100}
-                expanded={filteredFrameworks.length < 3}
-              />
-            ))}
-          </div>
+        
+        <div className="framework-tabs">
+          <button 
+            className={`tab-btn ${activeTab === 'premium' ? 'active' : ''}`}
+            onClick={() => setActiveTab('premium')}
+          >
+            Premium Frameworks
+          </button>
+          <button 
+            className={`tab-btn ${activeTab === 'free' ? 'active' : ''}`}
+            onClick={() => setActiveTab('free')}
+          >
+            Free Tools
+          </button>
+          <button 
+            className={`tab-btn ${activeTab === 'upcoming' ? 'active' : ''}`}
+            onClick={() => setActiveTab('upcoming')}
+          >
+            Coming Soon
+          </button>
         </div>
-      </section>
-      
-      {/* Framework Comparison Section */}
-      <section className="comparison-section">
-        <div className="container">
-          <AuthorityPositioningTrigger intensity="high">
-            <div className="section-header">
-              <h2 className="section-title">
-                Why <span className="text-gradient">Traditional Approaches</span> Fail in 2025
-              </h2>
-              <p className="section-subtitle">
-                See how IPP.TOOLS frameworks compare to traditional growth strategies
-              </p>
-            </div>
-          </AuthorityPositioningTrigger>
-          
-          <ComparisonTable 
-            data={comparisonData}
-            highlightColumn="vibecascade"
-          />
-          
-          <div className="comparison-visual">
-            <PsychologicalVisualizer
-              type="chart"
-              variant="growth"
-              className="growth-visualization"
-              width={800}
-              height={400}
+        
+        <div className="frameworks-grid">
+          {frameworksData[activeTab].map((framework) => (
+            <FrameworkCard
+              key={framework.id}
+              title={framework.title}
+              description={framework.description}
+              features={framework.features}
+              price={framework.price}
+              priceNote={framework.priceNote}
+              status={framework.status}
+              buttonText={framework.buttonText}
+              buttonUrl={framework.buttonUrl}
+              onClick={() => {
+                // Track click event
+                if (window.ippTools?.trackEvent) {
+                  window.ippTools.trackEvent('framework_click', {
+                    id: framework.id,
+                    type: activeTab,
+                    location: 'frameworks_page'
+                  });
+                }
+              }}
             />
-          </div>
+          ))}
         </div>
-      </section>
-      
-      {/* Implementation Process Section */}
-      <section className="implementation-section">
-        <div className="container">
-          <div className="section-header">
-            <h2 className="section-title">Implementation Process</h2>
-            <p className="section-subtitle">
-              Our frameworks are designed for practical, step-by-step implementation
-            </p>
+        
+        {activeTab === 'premium' && (
+          <div className="comparison-section">
+            <h2 className="section-title">Why Traditional Methods Fail in 2025</h2>
+            <div className="comparison-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Criteria</th>
+                    <th>Traditional Methods</th>
+                    <th>IPP.TOOLS Frameworks</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Algorithm Resilience</td>
+                    <td>Dependent on platform-specific "hacks" that break with updates</td>
+                    <td>Based on psychological constants that ALL platforms are designed to reward</td>
+                  </tr>
+                  <tr>
+                    <td>Engagement Rate</td>
+                    <td>5-15% average</td>
+                    <td>45-60% average (572% increase from baseline)</td>
+                  </tr>
+                  <tr>
+                    <td>Viral Potential</td>
+                    <td>Unpredictable, largely based on luck</td>
+                    <td>Engineered virality through cognitive trigger sequencing</td>
+                  </tr>
+                  <tr>
+                    <td>Conversion Model</td>
+                    <td>Direct, often resistance-inducing</td>
+                    <td>Multi-dimensional approach that bypasses conscious resistance</td>
+                  </tr>
+                  <tr>
+                    <td>Long-term Results</td>
+                    <td>Diminishing returns as tactics become outdated</td>
+                    <td>Compound growth through neural reinforcement patterns</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-          
-          <div className="process-steps">
-            <div className="process-step">
-              <div className="step-number">1</div>
-              <h3>Framework Access</h3>
-              <p>Join the waitlist or get immediate access to premium frameworks</p>
-            </div>
-            
-            <div className="process-step">
-              <div className="step-number">2</div>
-              <h3>Implementation Guide</h3>
-              <p>Follow our detailed, platform-specific implementation guide</p>
-            </div>
-            
-            <div className="process-step">
-              <div className="step-number">3</div>
-              <h3>Psychological Integration</h3>
-              <p>Apply cognitive triggers to your existing content and strategy</p>
-            </div>
-            
-            <div className="process-step">
-              <div className="step-number">4</div>
-              <h3>Results Tracking</h3>
-              <p>Measure your results with our analytics dashboard</p>
-            </div>
-          </div>
+        )}
+        
+        <div className="frameworks-cta">
+          <h2 className="cta-title">Ready to transform your digital presence?</h2>
+          <p className="cta-description">
+            Join the elite 7% of creators who are using advanced psychological frameworks 
+            to achieve exponential growth in 2025.
+          </p>
+          <a href="/waitlist" className="btn btn-gradient btn-lg">
+            Join Priority Waitlist
+          </a>
         </div>
-      </section>
-      
-      {/* CTA Section */}
-      <section className="cta-section">
-        <div className="container">
-          <div className="cta-content">
-            <CognitiveDissonanceActivator type="scarcity" intensity="medium">
-              <h2 className="cta-title">Ready to Implement Elite Psychological Frameworks?</h2>
-            </CognitiveDissonanceActivator>
-            
-            <p className="cta-subtitle">
-              Choose your framework or join our waitlist for priority access
-            </p>
-            
-            <div className="cta-buttons">
-              <Link to="/waitlist" className="btn btn-gradient btn-lg">
-                Join Priority Waitlist
-              </Link>
-              <a href="https://vibecascade.ipp.tools" className="btn btn-outline btn-lg" target="_blank" rel="noopener noreferrer">
-                Access VibeCascade Framework
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
+      </div>
     </div>
   );
 };
