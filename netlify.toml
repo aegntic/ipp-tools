@@ -5,8 +5,8 @@
 # Global build settings (for monorepo)
 [build]
   base = "/"
-  command = "npm run prebuild && npm run build"
-  publish = "dist"
+  command = "npm install && npm run build:ipp"
+  publish = "sites/ipp-main/dist"
   ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- ."
 
 # Production context
@@ -156,7 +156,7 @@
   [headers.values]
     X-Frame-Options = "DENY"
     X-XSS-Protection = "1; mode=block"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://tracking.ipp.tools; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.ipp.tools https://cascadevibe.com; connect-src 'self' https://*.ipp.tools https://api.ipp.tools https://tracking.ipp.tools https://cascadevibe.com;"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://tracking.ipp.tools; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.ipp.tools https://cascadevibe.com; connect-src 'self' https://*.ipp.tools https://api.ipp.tools https://tracking.ipp.tools https://cascadevibe.com;"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Cache-Control = "public, max-age=3600"
 
