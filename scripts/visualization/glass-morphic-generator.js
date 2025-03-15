@@ -9,8 +9,9 @@ const path = require('path');
  */
 class GlassMorphicGenerator {
   constructor(config) {
-    this.config = config;
-    this.outputDir = config.outputDir || 'dist/assets/visualizations';
+    // Ensure config is defined with defaults
+    this.config = config || {};
+    this.outputDir = this.config.outputDir || 'dist/assets/visualizations';
   }
 
   /**
