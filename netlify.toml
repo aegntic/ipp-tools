@@ -1,95 +1,191 @@
-# Netlify Configuration for IPP.TOOLS Platform
+# Main Netlify configuration for the IPP.TOOLS ecosystem
+# This file defines build settings, redirects, and environment variables
+# for the multi-domain architecture
 
-# Main production build configuration
+# Global build settings (for monorepo)
 [build]
-  command = "npm run build:all"
+  base = "/"
+  command = "npm run build"
   publish = "dist"
-  environment = { NODE_VERSION = "18.x" }
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- ."
 
-# Domain-specific environment variables
+# Production context
+[context.production]
+  environment = { NODE_ENV = "production", TRACKING_ENABLED = "true" }
+
+# Staging/development context
+[context.staging]
+  environment = { NODE_ENV = "staging", TRACKING_ENABLED = "true", STAGING_INDICATOR = "true" }
+
+# Branch-specific context for development
+[context.branch-deploy]
+  environment = { NODE_ENV = "development", TRACKING_ENABLED = "false" }
+
+# Domain-specific build configurations
+
+# Main domain (ipp.tools)
 [context.production.environment]
-  VITE_API_URL = "https://api.ipp.tools"
-  VITE_ANALYTICS_ID = "G-XXXXXXXX"
-  VITE_ENABLE_PSYCHOLOGICAL_TRIGGERS = "true"
+  SITE_DOMAIN = "ipp.tools"
+  PRIMARY_COLOR = "#5468ff"
+  FRAMEWORK_TYPE = "main"
 
-# Development branch specific settings
-[context.develop]
-  command = "npm run build:all"
-  
-# PR preview settings
-[context.deploy-preview]
-  command = "npm run build:all"
+# CascadeVibe domain
+[[contexts]]
+  for = "/sites/cascadevibe/*"
+  [contexts.environment]
+    SITE_DOMAIN = "cascadevibe.com"
+    PRIMARY_COLOR = "#5468ff"
+    FRAMEWORK_TYPE = "cascadevibe"
+    FRAMEWORK_ID = "cascadevibe"
+    FRAMEWORK_NAME = "CascadeVibe Framework"
+    FRAMEWORK_DESCRIPTION = "The psychological framework elite creators use to achieve exponential engagement growth"
 
-# Framework-specific redirects for multi-domain architecture
+# NeuralNarrative subdomain
+[[contexts]]
+  for = "/sites/neuralnarrative/*"
+  [contexts.environment]
+    SITE_DOMAIN = "neuralnarrative.ipp.tools"
+    PRIMARY_COLOR = "#00c4cc"
+    FRAMEWORK_TYPE = "neuralnarrative"
+    FRAMEWORK_ID = "neuralnarrative"
+    FRAMEWORK_NAME = "NeuralNarrative Framework"
+    FRAMEWORK_DESCRIPTION = "Craft stories that bypass conscious filtering and speak directly to the limbic system"
+    FRAMEWORK_STATUS = "waitlist"
+
+# PrimalPositioning subdomain
+[[contexts]]
+  for = "/sites/primalposition/*"
+  [contexts.environment]
+    SITE_DOMAIN = "primalposition.ipp.tools"
+    PRIMARY_COLOR = "#ff5a5f"
+    FRAMEWORK_TYPE = "primalposition"
+    FRAMEWORK_ID = "primalposition"
+    FRAMEWORK_NAME = "PrimalPositioning Framework"
+    FRAMEWORK_DESCRIPTION = "Evolutionary psychology-based positioning strategies that activate tribal defense mechanisms"
+    FRAMEWORK_STATUS = "waitlist"
+
+# QuantumConversion subdomain
+[[contexts]]
+  for = "/sites/quantumconversion/*"
+  [contexts.environment]
+    SITE_DOMAIN = "quantumconversion.ipp.tools"
+    PRIMARY_COLOR = "#34d399"
+    FRAMEWORK_TYPE = "quantumconversion"
+    FRAMEWORK_ID = "quantumconversion"
+    FRAMEWORK_NAME = "QuantumConversion Framework"
+    FRAMEWORK_DESCRIPTION = "Multi-dimensional conversion frameworks that work across all psychological profiles"
+    FRAMEWORK_STATUS = "waitlist"
+
+# Free tools subdomains
+[[contexts]]
+  for = "/sites/algodecoder/*"
+  [contexts.environment]
+    SITE_DOMAIN = "algodecoder.ipp.tools"
+    PRIMARY_COLOR = "#f59e0b"
+    FRAMEWORK_TYPE = "free"
+    FRAMEWORK_ID = "algodecoder"
+    FRAMEWORK_NAME = "AlgoDecoder"
+    FRAMEWORK_DESCRIPTION = "Decode the exact psychological patterns each social algorithm rewards"
+    UPSELL_FRAMEWORK = "cascadevibe"
+
+[[contexts]]
+  for = "/sites/neurocopy/*"
+  [contexts.environment]
+    SITE_DOMAIN = "neurocopy.ipp.tools"
+    PRIMARY_COLOR = "#8b5cf6"
+    FRAMEWORK_TYPE = "free"
+    FRAMEWORK_ID = "neurocopy"
+    FRAMEWORK_NAME = "NeuroCopy"
+    FRAMEWORK_DESCRIPTION = "Test your copy against the 17 neurological triggers that drive action"
+    UPSELL_FRAMEWORK = "quantumconversion"
+
+[[contexts]]
+  for = "/sites/identitymapper/*"
+  [contexts.environment]
+    SITE_DOMAIN = "identitymapper.ipp.tools"
+    PRIMARY_COLOR = "#ec4899"
+    FRAMEWORK_TYPE = "free"
+    FRAMEWORK_ID = "identitymapper"
+    FRAMEWORK_NAME = "IdentityMapper"
+    FRAMEWORK_DESCRIPTION = "Map the exact identity triggers that activate tribal responses in your audience"
+    UPSELL_FRAMEWORK = "primalposition"
+
+# Domain-specific redirects for cross-domain routing
+
+# Main domain redirects
 [[redirects]]
-  from = "https://vibecascade.ipp.tools/*"
-  to = "/vibecascade/index.html"
-  status = 200
+  from = "https://ipp.tools/frameworks/cascadevibe/*"
+  to = "https://cascadevibe.com/:splat"
+  status = 301
   force = true
 
 [[redirects]]
-  from = "https://neuralnarrative.ipp.tools/*"
+  from = "https://ipp.tools/frameworks/neuralnarrative/*"
+  to = "https://neuralnarrative.ipp.tools/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://ipp.tools/frameworks/primalposition/*"
+  to = "https://primalposition.ipp.tools/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://ipp.tools/frameworks/quantumconversion/*"
+  to = "https://quantumconversion.ipp.tools/:splat"
+  status = 301
+  force = true
+
+# Framework-specific waitlist redirects
+[[redirects]]
+  from = "/waitlist"
   to = "/waitlist.html"
   status = 200
   force = true
-  query = {framework = "NeuralNarrative"}
 
-[[redirects]]
-  from = "https://primalposition.ipp.tools/*"
-  to = "/waitlist.html"
-  status = 200
-  force = true
-  query = {framework = "PrimalPositioning"}
-
-[[redirects]]
-  from = "https://quantumconversion.ipp.tools/*"
-  to = "/waitlist.html"
-  status = 200
-  force = true
-  query = {framework = "QuantumConversion"}
-
-# 404 fallback - SPA support
+# SPA fallback for client-side routing
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
-# Netlify functions directory configuration
-[functions]
-  directory = "netlify/functions"
-
-# Build settings
-[build.processing]
-  skip_processing = false
-[build.processing.css]
-  bundle = true
-  minify = true
-[build.processing.js]
-  bundle = true
-  minify = true
-[build.processing.images]
-  compress = true
-
-# Headers for security and caching
+# Performance optimization and caching
 [[headers]]
   for = "/*"
   [headers.values]
     X-Frame-Options = "DENY"
     X-XSS-Protection = "1; mode=block"
-    X-Content-Type-Options = "nosniff"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://tracking.ipp.tools; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.ipp.tools https://cascadevibe.com; connect-src 'self' https://*.ipp.tools https://api.ipp.tools https://tracking.ipp.tools https://cascadevibe.com;"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' https://www.googletagmanager.com https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.facebook.com; connect-src 'self' https://api.ipp.tools https://www.google-analytics.com;"
+    Cache-Control = "public, max-age=3600"
 
-# Cache control for static assets
+# Cache static assets more aggressively
 [[headers]]
   for = "/*.js"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=86400"
+
 [[headers]]
   for = "/*.css"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=86400"
+
 [[headers]]
   for = "/images/*"
   [headers.values]
     Cache-Control = "public, max-age=604800"
+
+# Dependency Optimization
+[build.processing]
+  skip_processing = false
+  [build.processing.css]
+    bundle = true
+    minify = true
+  [build.processing.js]
+    bundle = true
+    minify = true
+  [build.processing.html]
+    pretty_urls = true
+  [build.processing.images]
+    compress = true
