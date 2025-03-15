@@ -1,14 +1,29 @@
 /**
- * IPP.TOOLS UI Component Library
+ * IPP.TOOLS UI Components
  * 
- * This module exports reusable UI components with built-in
- * psychological optimization for maximum conversion efficiency.
+ * A collection of psychologically-optimized React components for 
+ * implementing the IPP.TOOLS engagement frameworks.
  */
 
-// Framework Components
-export { default as FrameworkCard } from './components/FrameworkCard/FrameworkCard';
+// Visualization Components
+export { default as PsychologicalVisualizer } from './components/PsychologicalVisualizer';
 
-// Add other components here as they're implemented
-// export { default as WaitlistForm } from './components/WaitlistForm/WaitlistForm';
-// export { default as FeatureHighlight } from './components/FeatureHighlight/FeatureHighlight';
-// export { default as TestimonialCard } from './components/TestimonialCard/TestimonialCard';
+// Psychological UI Components
+export { default as WaitlistForm } from './components/WaitlistForm';
+export { default as FrameworkCard } from './components/FrameworkCard';
+export { default as TestimonialCard } from './components/TestimonialCard';
+export { default as EngagementMetric } from './components/EngagementMetric';
+export { default as Countdown } from './components/Countdown';
+export { default as SocialProof } from './components/SocialProof';
+export { default as ComparisonTable } from './components/ComparisonTable';
+export { default as PsychologicalVisualizationLoader } from './components/PsychologicalVisualizationLoader';
+
+// Context Providers
+export { default as ThemeProvider } from './providers/ThemeProvider';
+export { default as EngagementContextProvider } from './providers/EngagementContextProvider';
+
+// Hooks
+export { useTheme } from './hooks/useTheme';
+export { useEngagement } from './hooks/useEngagement';
+export { useVisibility } from './hooks/useVisibility';
+export { usePsychologicalTrigger } from './hooks/usePsychologicalTrigger';
