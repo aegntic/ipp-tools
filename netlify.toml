@@ -1,0 +1,38 @@
+# Main production context
+[build]
+  command = "npm run build:all"
+  publish = "dist"
+  environment = { NODE_VERSION = "18.x" }
+
+# Domain-specific configurations
+[context.production.environment]
+  VITE_API_URL = "https://api.ipp.tools"
+  VITE_ANALYTICS_ID = "G-XXXXXXXX"
+  VITE_ENABLE_PSYCHOLOGICAL_TRIGGERS = "true"
+
+# Framework-specific redirects for proper site routing
+[[redirects]]
+  from = "https://vibecascade.ipp.tools/*"
+  to = "/vibecascade/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "https://neuralnarrative.ipp.tools/*"
+  to = "/waitlist.html"
+  status = 200
+  force = true
+  query = {framework = "NeuralNarrative"}
+
+[[redirects]]
+  from = "https://primalposition.ipp.tools/*"
+  to = "/waitlist.html"
+  status = 200
+  force = true
+  query = {framework = "PrimalPositioning"}
+
+# 404 handling
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
