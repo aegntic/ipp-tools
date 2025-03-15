@@ -11,7 +11,11 @@
     "preview": "vite preview",
     "build:ipp": "vite build --config vite.config.ipp.js",
     "build:vibecascade": "vite build --config vite.config.vibecascade.js",
-    "build:all": "npm run build:ipp && npm run build:vibecascade"
+    "build:all": "npm run build:ipp && npm run build:vibecascade",
+    "deploy": "chmod +x ./scripts/deploy.sh && ./scripts/deploy.sh",
+    "deploy:ipp": "chmod +x ./scripts/deploy.sh && ./scripts/deploy.sh ipp",
+    "deploy:vibecascade": "chmod +x ./scripts/deploy.sh && ./scripts/deploy.sh vibecascade",
+    "analyze": "source-map-explorer 'dist/**/*.js'"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -29,6 +33,7 @@
     "@vitejs/plugin-react": "^4.2.0",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.31",
+    "source-map-explorer": "^2.5.3",
     "vite": "^5.0.0"
   }
 }
