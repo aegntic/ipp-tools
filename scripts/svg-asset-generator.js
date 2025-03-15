@@ -20,8 +20,14 @@ class SVGAssetGenerator {
     };
     
     // Create output directory if it doesn't exist
-    if (!fs.existsSync(this.config.outputDir)) {
-      fs.mkdirSync(this.config.outputDir, { recursive: true });
+    try {
+      if (!fs.existsSync(this.config.outputDir)) {
+        fs.mkdirSync(this.config.outputDir, { recursive: true });
+        console.log(`Created output directory: ${this.config.outputDir}`);
+      }
+    } catch (error) {
+      console.error(`Error creating output directory: ${error.message}`);
+      console.log('Will attempt to continue with asset generation...');
     }
   }
   
@@ -164,9 +170,19 @@ class SVGAssetGenerator {
    * @param {string} filename - Output filename
    */
   saveSVG(svg, filename) {
-    const filePath = path.join(this.config.outputDir, filename);
-    fs.writeFileSync(filePath, svg);
-    console.log(`SVG saved to ${filePath}`);
+    try {
+      // Create directory for file if it doesn't exist
+      const dirPath = path.dirname(path.join(this.config.outputDir, filename));
+      if (!fs.existsSync(dirPath)) {
+        fs.mkdirSync(dirPath, { recursive: true });
+      }
+      
+      const filePath = path.join(this.config.outputDir, filename);
+      fs.writeFileSync(filePath, svg);
+      console.log(`SVG saved to ${filePath}`);
+    } catch (error) {
+      console.error(`Error saving SVG to ${filename}: ${error.message}`);
+    }
   }
   
   /**
@@ -187,17 +203,26 @@ class SVGAssetGenerator {
       'triggers/authority-markers'
     ];
     
+    // Create directories with error handling
     directories.forEach(dir => {
-      const dirPath = path.join(this.config.outputDir, dir);
-      if (!fs.existsSync(dirPath)) {
-        fs.mkdirSync(dirPath, { recursive: true });
+      try {
+        const dirPath = path.join(this.config.outputDir, dir);
+        if (!fs.existsSync(dirPath)) {
+          fs.mkdirSync(dirPath, { recursive: true });
+        }
+      } catch (error) {
+        console.error(`Error creating directory ${dir}: ${error.message}`);
       }
     });
     
-    // Generate branding assets
-    this.saveSVG(this.generateLogo({ variant: 'primary' }), 'branding/logo-primary.svg');
-    this.saveSVG(this.generateLogo({ variant: 'horizontal' }), 'branding/logo-horizontal.svg');
-    this.saveSVG(this.generateLogo({ variant: 'mark', width: 100, height: 100 }), 'branding/logo-mark-only.svg');
+    // Generate branding assets with error handling
+    try {
+      this.saveSVG(this.generateLogo({ variant: 'primary' }), 'branding/logo-primary.svg');
+      this.saveSVG(this.generateLogo({ variant: 'horizontal' }), 'branding/logo-horizontal.svg');
+      this.saveSVG(this.generateLogo({ variant: 'mark', width: 100, height: 100 }), 'branding/logo-mark-only.svg');
+    } catch (error) {
+      console.error(`Error generating branding assets: ${error.message}`);
+    }
     
     // Generate framework components
     const components = [
@@ -210,11 +235,15 @@ class SVGAssetGenerator {
     ];
     
     components.forEach(component => {
-      this.saveSVG(
-        this.generateFrameworkComponent({ componentName: component }), 
-        `framework/trigger-icons/${component}.svg`
-      );
+      try {
+        const svg = this.generateFrameworkComponent({ componentName: component });
+        this.saveSVG(svg, `framework/trigger-icons/${component}.svg`);
+      } catch (error) {
+        console.error(`Error generating component ${component}: ${error.message}`);
+      }
     });
+    
+    console.log('Asset generation complete (errors may have occurred)');
   }
 }
 
