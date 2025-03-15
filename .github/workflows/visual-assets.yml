@@ -1,0 +1,60 @@
+name: Visual Asset Generation
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'asset-config.json'
+      - '.github/workflows/visual-assets.yml'
+  workflow_dispatch:
+    inputs:
+      color_primary:
+        description: 'Primary color (hex)'
+        default: '#5468ff'
+        required: true
+      color_secondary:
+        description: 'Secondary color (hex)'
+        default: '#8400ff'
+        required: true
+
+jobs:
+  generate-assets:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Generate visual assets
+        run: |
+          # Create asset configuration from inputs or default file
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "{\"colorPrimary\":\"${{ github.event.inputs.color_primary }}\",\"colorSecondary\":\"${{ github.event.inputs.color_secondary }}\"}"
+          fi
+          
+          # Create necessary directory structure
+          mkdir -p sites/cascadevibe/public/assets/images/{
+            branding,
+            framework,framework/trigger-icons,
+            social-proof,social-proof/testimonials,social-proof/results,
+            triggers,triggers/scarcity-indicators,triggers/social-validation,triggers/authority-markers
+          }
+          
+          # Run the asset generator
+          node scripts/generate-assets.js
+      
+      - name: Commit and push assets
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add sites/cascadevibe/public/assets/images
+          git commit -m "Update visual assets with psychological optimization [skip ci]" || echo "No changes to commit"
+          git push
