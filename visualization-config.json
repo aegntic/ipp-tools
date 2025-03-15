@@ -1,0 +1,37 @@
+{
+  "outputDir": "public/assets/visualizations",
+  "variants": ["light", "dark"],
+  "reactComponentDir": "src/components/visualizations",
+  "psychologicalTriggers": {
+    "authorityPositioning": {
+      "enabled": true,
+      "effectiveness": 85
+    },
+    "cognitiveDissonance": {
+      "enabled": true,
+      "effectiveness": 92
+    },
+    "identityReinforcement": {
+      "enabled": true,
+      "effectiveness": 78
+    },
+    "scarcity": {
+      "enabled": true,
+      "effectiveness": 89
+    },
+    "socialProof": {
+      "enabled": true,
+      "effectiveness": 84
+    }
+  },
+  "animationSettings": {
+    "initialDelay": 500,
+    "staggerDelay": 200,
+    "enableReducedMotion": true
+  },
+  "conversionTracking": {
+    "enabled": true,
+    "triggerTypes": ["view", "hover", "click"],
+    "integrations": ["analytics", "metrics", "eventBus"]
+  }
+}
