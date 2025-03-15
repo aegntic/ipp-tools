@@ -153,8 +153,24 @@ async function generateVisualizations() {
           // Create SVG document
           const svg = SVG(document.documentElement).size(800, 600);
           
-          // Generate the visualization
-          await generator(svg, variant, colorScheme);
+          // Generate the visualization using a defensive execution pattern
+          try {
+            await generator(svg, variant, colorScheme || {
+              main: '#5468ff',
+              light: '#7d8bff',
+              dark: '#3a4eef',
+              gradient: ['#5468ff', '#8400ff']
+            });
+          } catch (error) {
+            console.error(`  ⚠️ Error in ${type} visualization generation:`, error);
+            // Draw fallback visualization
+            drawFallbackVisualization(svg, type, variant, colorScheme || {
+              main: '#5468ff',
+              light: '#7d8bff',
+              dark: '#3a4eef',
+              gradient: ['#5468ff', '#8400ff']
+            });
+          }
           
           // Save to file
           fs.writeFileSync(outputPath, svg.svg());
@@ -172,9 +188,91 @@ async function generateVisualizations() {
 }
 
 /**
+ * Creates a fallback visualization when the primary generator fails
+ */
+function drawFallbackVisualization(svg, type, variant, colorScheme) {
+  // Ensure colorScheme has all required properties
+  const safeColorScheme = {
+    main: '#5468ff',
+    light: '#7d8bff',
+    dark: '#3a4eef',
+    gradient: ['#5468ff', '#8400ff'],
+    ...(colorScheme || {})
+  };
+  
+  // Set a safe background color based on variant
+  const bgColor = variant === 'dark' ? '#0f172a' : '#f8f9fa';
+  svg.rect(800, 600).fill(bgColor);
+  
+  // Add error text
+  svg.text(`Visualization Generation: ${type}`)
+    .font({
+      family: 'Arial, sans-serif',
+      size: 24,
+      weight: 'bold'
+    })
+    .fill(variant === 'dark' ? '#f1f5f9' : '#333')
+    .move(50, 50);
+  
+  // Add error card
+  const errorCard = svg.group().transform('translate(50, 100)');
+  
+  errorCard.rect(700, 100)
+    .radius(10)
+    .fill(variant === 'dark' ? 'rgba(15, 23, 42, 0.5)' : 'rgba(255, 255, 255, 0.5)')
+    .stroke(variant === 'dark' ? '#2e3b4e' : '#e1e5eb');
+  
+  errorCard.text("This visualization is being regenerated for optimal performance")
+    .font({
+      family: 'Arial, sans-serif',
+      size: 18
+    })
+    .fill(safeColorScheme.main)
+    .move(50, 40);
+  
+  // Add a sample shape related to the visualization type
+  const shapeGroup = svg.group().transform('translate(350, 300)');
+  
+  if (type === 'dashboard') {
+    // Draw a simple dashboard icon
+    shapeGroup.rect(100, 70).radius(5).fill('none').stroke({color: safeColorScheme.main, width: 2});
+    shapeGroup.rect(30, 20).radius(2).fill(safeColorScheme.main).move(10, 10);
+    shapeGroup.rect(30, 20).radius(2).fill(safeColorScheme.light).move(60, 10);
+    shapeGroup.rect(80, 20).radius(2).fill(safeColorScheme.dark).move(10, 40);
+  } else if (type === 'chart') {
+    // Draw a simple chart icon
+    shapeGroup.polyline([0,50, 20,30, 40,40, 60,10, 80,25]).fill('none').stroke({color: safeColorScheme.main, width: 2});
+    shapeGroup.line(0, 60, 80, 60).stroke({color: safeColorScheme.dark, width: 2});
+    shapeGroup.line(0, 0, 0, 60).stroke({color: safeColorScheme.dark, width: 2});
+  } else {
+    // Generic shape for other types
+    shapeGroup.circle(80).fill('none').stroke({color: safeColorScheme.main, width: 2});
+    shapeGroup.rect(60, 60).fill('none').stroke({color: safeColorScheme.light, width: 2}).move(10, 10);
+  }
+  
+  // Add footer text
+  svg.text("© IPP.TOOLS 2025")
+    .font({
+      family: 'Arial, sans-serif',
+      size: 12
+    })
+    .fill(variant === 'dark' ? '#94a3b8' : '#666')
+    .move(50, 550);
+}
+
+/**
  * Error visualization with cognitive gap framing
  */
 function generateErrorVisualization(svg, variant, colorScheme) {
+  // Ensure colorScheme has all required properties
+  const safeColorScheme = {
+    main: '#5468ff',
+    light: '#7d8bff',
+    dark: '#3a4eef',
+    gradient: ['#5468ff', '#8400ff'],
+    ...(colorScheme || {})
+  };
+  
   // Set background
   const bgColor = variant === 'dark' ? '#0f172a' : '#f8f9fa';
   svg.rect(800, 600).fill(bgColor);
@@ -198,7 +296,7 @@ function generateErrorVisualization(svg, variant, colorScheme) {
     })
     .fill('none')
     .stroke({
-      color: colorScheme.main,
+      color: safeColorScheme.main,
       width: 2,
       opacity: 0.5
     })
@@ -217,7 +315,7 @@ function generateErrorVisualization(svg, variant, colorScheme) {
       if ((i + j) % 3 !== 0) {
         patternGroup
           .circle(8)
-          .fill(colorScheme.main)
+          .fill(safeColorScheme.main)
           .opacity((i + j) % 2 === 0 ? 0.7 : 0.4)
           .move(x, y);
       }
@@ -227,7 +325,7 @@ function generateErrorVisualization(svg, variant, colorScheme) {
         patternGroup
           .line(x + 8, y + 4, x + 60, y + 4)
           .stroke({
-            color: colorScheme.main,
+            color: safeColorScheme.main,
             width: 1,
             opacity: 0.3
           });
@@ -237,7 +335,7 @@ function generateErrorVisualization(svg, variant, colorScheme) {
         patternGroup
           .line(x + 4, y + 8, x + 4, y + 30)
           .stroke({
-            color: colorScheme.main,
+            color: safeColorScheme.main,
             width: 1,
             opacity: 0.2
           });
@@ -246,7 +344,7 @@ function generateErrorVisualization(svg, variant, colorScheme) {
   }
   
   // Subtext with identity reinforcement
-  svg.text('The path you\'re looking for doesn\'t exist, but like any elite creator, you can quickly pivot to a new opportunity.')
+  svg.text("The path you're looking for doesn't exist, but like any elite creator, you can quickly pivot to a new opportunity.")
     .font({
       family: 'Arial, sans-serif',
       size: 16
@@ -260,6 +358,15 @@ function generateErrorVisualization(svg, variant, colorScheme) {
  * Generate a dashboard visualization with cognitive triggers
  */
 function generateDashboardVisualization(svg, variant, colorScheme) {
+  // Ensure colorScheme has all required properties
+  const safeColorScheme = {
+    main: '#5468ff',
+    light: '#7d8bff',
+    dark: '#3a4eef',
+    gradient: ['#5468ff', '#8400ff'],
+    ...(colorScheme || {})
+  };
+  
   // Background with subtle gradient
   const bgColor = variant === 'dark' ? '#0f172a' : '#f8f9fa';
   svg.rect(800, 600).fill(bgColor);
@@ -288,19 +395,19 @@ function generateDashboardVisualization(svg, variant, colorScheme) {
   // Engagement metric
   const metric1 = metricsGroup.group();
   metric1.rect(200, 100).radius(10).fill(variant === 'dark' ? 'rgba(15, 23, 42, 0.5)' : 'rgba(255, 255, 255, 0.5)').stroke('#e1e5eb').move(0, 0);
-  metric1.text('572%').font({ family: 'Arial', size: 32, weight: 'bold' }).fill(colorScheme.main).move(20, 30);
+  metric1.text('572%').font({ family: 'Arial', size: 32, weight: 'bold' }).fill(safeColorScheme.main).move(20, 30);
   metric1.text('Average Engagement').font({ family: 'Arial', size: 14 }).fill(variant === 'dark' ? '#94a3b8' : '#666').move(20, 70);
   
   // Creators metric
   const metric2 = metricsGroup.group();
   metric2.rect(200, 100).radius(10).fill(variant === 'dark' ? 'rgba(15, 23, 42, 0.5)' : 'rgba(255, 255, 255, 0.5)').stroke('#e1e5eb').move(220, 0);
-  metric2.text('15,000+').font({ family: 'Arial', size: 32, weight: 'bold' }).fill(colorScheme.main).move(240, 30);
+  metric2.text('15,000+').font({ family: 'Arial', size: 32, weight: 'bold' }).fill(safeColorScheme.main).move(240, 30);
   metric2.text('Elite Creators').font({ family: 'Arial', size: 14 }).fill(variant === 'dark' ? '#94a3b8' : '#666').move(240, 70);
   
   // Success metric
   const metric3 = metricsGroup.group();
   metric3.rect(200, 100).radius(10).fill(variant === 'dark' ? 'rgba(15, 23, 42, 0.5)' : 'rgba(255, 255, 255, 0.5)').stroke('#e1e5eb').move(440, 0);
-  metric3.text('97.8%').font({ family: 'Arial', size: 32, weight: 'bold' }).fill(colorScheme.main).move(460, 30);
+  metric3.text('97.8%').font({ family: 'Arial', size: 32, weight: 'bold' }).fill(safeColorScheme.main).move(460, 30);
   metric3.text('Implementation Success').font({ family: 'Arial', size: 14 }).fill(variant === 'dark' ? '#94a3b8' : '#666').move(460, 70);
   
   // Bottom copyright info
@@ -317,6 +424,15 @@ function generateDashboardVisualization(svg, variant, colorScheme) {
  * Generate a chart visualization
  */
 function generateChartVisualization(svg, variant, colorScheme) {
+  // Ensure colorScheme has all required properties
+  const safeColorScheme = {
+    main: '#5468ff',
+    light: '#7d8bff',
+    dark: '#3a4eef',
+    gradient: ['#5468ff', '#8400ff'],
+    ...(colorScheme || {})
+  };
+  
   // Set background
   const bgColor = variant === 'dark' ? '#0f172a' : '#f8f9fa';
   svg.rect(800, 600).fill(bgColor);
@@ -364,7 +480,7 @@ function generateChartVisualization(svg, variant, colorScheme) {
   
   chartGroup.polyline(ippPoints.flat())
     .fill('none')
-    .stroke({ width: 3, color: colorScheme.main });
+    .stroke({ width: 3, color: safeColorScheme.main });
   
   // Traditional methods line (linear growth)
   const tradPoints = [];
@@ -381,7 +497,7 @@ function generateChartVisualization(svg, variant, colorScheme) {
   // Add legend
   const legendGroup = chartGroup.group().transform('translate(500, 70)');
   
-  legendGroup.line(0, 0, 20, 0).stroke({ width: 3, color: colorScheme.main });
+  legendGroup.line(0, 0, 20, 0).stroke({ width: 3, color: safeColorScheme.main });
   legendGroup.text('IPP Framework').font({ family: 'Arial', size: 14 }).fill(variant === 'dark' ? '#f1f5f9' : '#333').move(30, -5);
   
   legendGroup.line(0, 25, 20, 25).stroke({ width: 3, color: '#94a3b8', dasharray: '5,5' });
@@ -392,6 +508,15 @@ function generateChartVisualization(svg, variant, colorScheme) {
  * Generate an analysis wave visualization
  */
 function generateAnalysisVisualization(svg, variant, colorScheme) {
+  // Ensure colorScheme has all required properties
+  const safeColorScheme = {
+    main: '#5468ff',
+    light: '#7d8bff',
+    dark: '#3a4eef',
+    gradient: ['#5468ff', '#8400ff'],
+    ...(colorScheme || {})
+  };
+  
   // Set background
   const bgColor = variant === 'dark' ? '#0f172a' : '#f8f9fa';
   svg.rect(800, 600).fill(bgColor);
@@ -433,9 +558,9 @@ function generateAnalysisVisualization(svg, variant, colorScheme) {
       .fill('none')
       .stroke({ 
         width: 2 - i * 0.5, 
-        color: i === 0 ? colorScheme.main : 
-               i === 1 ? colorScheme.light :
-               colorScheme.dark,
+        color: i === 0 ? safeColorScheme.main : 
+               i === 1 ? safeColorScheme.light :
+               safeColorScheme.dark,
         opacity: 0.8 - i * 0.2
       });
   }
@@ -445,6 +570,15 @@ function generateAnalysisVisualization(svg, variant, colorScheme) {
  * Generate a fallacy visualization
  */
 function generateFallacyVisualization(svg, variant, colorScheme) {
+  // Ensure colorScheme has all required properties
+  const safeColorScheme = {
+    main: '#5468ff',
+    light: '#7d8bff',
+    dark: '#3a4eef',
+    gradient: ['#5468ff', '#8400ff'],
+    ...(colorScheme || {})
+  };
+  
   // Set background
   const bgColor = variant === 'dark' ? '#0f172a' : '#f8f9fa';
   svg.rect(800, 600).fill(bgColor);
@@ -503,7 +637,7 @@ function generateFallacyVisualization(svg, variant, colorScheme) {
     const y = 280 - (i * 15 + Math.random() * 20);
     
     plotGroup.circle(8)
-      .fill(colorScheme.main)
+      .fill(safeColorScheme.main)
       .opacity(0.7)
       .center(x, y);
   }
@@ -511,7 +645,7 @@ function generateFallacyVisualization(svg, variant, colorScheme) {
   // Legend
   const legendGroup = plotGroup.group().transform('translate(400, 50)');
   
-  legendGroup.circle(8).fill(colorScheme.main).center(10, 10);
+  legendGroup.circle(8).fill(safeColorScheme.main).center(10, 10);
   legendGroup.text('IPP Framework Users')
     .font({ family: 'Arial', size: 14 })
     .fill(variant === 'dark' ? '#f1f5f9' : '#333')
@@ -528,6 +662,15 @@ function generateFallacyVisualization(svg, variant, colorScheme) {
  * Generate a logo visualization
  */
 function generateLogoVisualization(svg, variant, colorScheme) {
+  // Ensure colorScheme has all required properties
+  const safeColorScheme = {
+    main: '#5468ff',
+    light: '#7d8bff',
+    dark: '#3a4eef',
+    gradient: ['#5468ff', '#8400ff'],
+    ...(colorScheme || {})
+  };
+  
   // Set dimensions for logo
   svg.size(180, 60);
   
@@ -544,7 +687,7 @@ function generateLogoVisualization(svg, variant, colorScheme) {
   // Logo icon - stylized "IPP" in a box
   logoGroup.rect(40, 40)
     .radius(5)
-    .fill(colorScheme.main);
+    .fill(safeColorScheme.main);
   
   logoGroup.text('IPP')
     .font({
@@ -571,6 +714,15 @@ function generateLogoVisualization(svg, variant, colorScheme) {
  * Generate particles visualization
  */
 function generateParticlesVisualization(svg, variant, colorScheme) {
+  // Ensure colorScheme has all required properties
+  const safeColorScheme = {
+    main: '#5468ff',
+    light: '#7d8bff',
+    dark: '#3a4eef',
+    gradient: ['#5468ff', '#8400ff'],
+    ...(colorScheme || {})
+  };
+  
   // Set background
   const bgColor = variant === 'dark' ? '#0f172a' : '#f8f9fa';
   svg.rect(800, 600).fill(bgColor);
@@ -588,7 +740,7 @@ function generateParticlesVisualization(svg, variant, colorScheme) {
     const opacity = Math.random() * 0.3 + 0.1;
     
     particleGroup.circle(size)
-      .fill(colorScheme.main)
+      .fill(safeColorScheme.main)
       .opacity(opacity)
       .center(x, y);
     
@@ -603,7 +755,7 @@ function generateParticlesVisualization(svg, variant, colorScheme) {
       if (distance < 150) {
         particleGroup.line(x, y, nextX, nextY)
           .stroke({
-            color: colorScheme.main,
+            color: safeColorScheme.main,
             width: 0.5,
             opacity: 0.1
           });
@@ -616,15 +768,22 @@ function generateParticlesVisualization(svg, variant, colorScheme) {
  * Helper function to convert hex color to RGB
  */
 function hexToRgb(hex) {
+  if (!hex) return '0, 0, 0'; // Failsafe default
+  
   // Remove the hash if it exists
   hex = hex.replace('#', '');
   
   // Parse the hex color
-  const r = parseInt(hex.substring(0, 2), 16);
-  const g = parseInt(hex.substring(2, 4), 16);
-  const b = parseInt(hex.substring(4, 6), 16);
-  
-  return `${r}, ${g}, ${b}`;
+  try {
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+    
+    return `${r}, ${g}, ${b}`;
+  } catch (e) {
+    // Return a default if parsing fails
+    return '0, 0, 0';
+  }
 }
 
 // Run the main function
