@@ -20,29 +20,13 @@
 [context.branch-deploy]
   environment = { NODE_ENV = "development", TRACKING_ENABLED = "false", GENERATE_VISUALIZATIONS = "true" }
 
-# Domain-specific build configurations
-
-# Main domain (ipp.tools)
+# Domain-specific environment variables - main domain (ipp.tools)
 [context.production.environment]
   SITE_DOMAIN = "ipp.tools"
   PRIMARY_COLOR = "#5468ff"
   FRAMEWORK_TYPE = "main"
 
 # CascadeVibe domain - Custom domain setup
-[context.cascadevibe]
-  publish = "sites/cascadevibe/dist"
-  command = "SITE_DOMAIN=cascadevibe.com node scripts/deploy.js"
-  [context.cascadevibe.environment]
-    SITE_DOMAIN = "cascadevibe.com"
-    PRIMARY_COLOR = "#5468ff"
-    FRAMEWORK_TYPE = "cascadevibe"
-    FRAMEWORK_ID = "cascadevibe"
-    FRAMEWORK_NAME = "CascadeVibe Framework"
-    FRAMEWORK_DESCRIPTION = "The psychological framework elite creators use to achieve exponential engagement growth"
-
-# Domain-specific redirects for cross-domain routing
-
-# Main domain redirects
 [[redirects]]
   from = "https://ipp.tools/frameworks/cascadevibe/*"
   to = "https://cascadevibe.com/:splat"
