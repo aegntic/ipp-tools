@@ -5,9 +5,8 @@
 # Global build settings (for monorepo)
 [build]
   base = "/"
-  command = "npm install && npm run build:ipp"
+  command = "node scripts/deploy.js"
   publish = "sites/ipp-main/dist"
-  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- ."
 
 # Production context
 [context.production]
@@ -29,86 +28,17 @@
   PRIMARY_COLOR = "#5468ff"
   FRAMEWORK_TYPE = "main"
 
-# CascadeVibe domain
-[[contexts]]
-  for = "/sites/cascadevibe/*"
-  [contexts.environment]
+# CascadeVibe domain - Custom domain setup
+[context.cascadevibe]
+  publish = "sites/cascadevibe/dist"
+  command = "SITE_DOMAIN=cascadevibe.com node scripts/deploy.js"
+  [context.cascadevibe.environment]
     SITE_DOMAIN = "cascadevibe.com"
     PRIMARY_COLOR = "#5468ff"
     FRAMEWORK_TYPE = "cascadevibe"
     FRAMEWORK_ID = "cascadevibe"
     FRAMEWORK_NAME = "CascadeVibe Framework"
     FRAMEWORK_DESCRIPTION = "The psychological framework elite creators use to achieve exponential engagement growth"
-
-# NeuralNarrative subdomain
-[[contexts]]
-  for = "/sites/neuralnarrative/*"
-  [contexts.environment]
-    SITE_DOMAIN = "neuralnarrative.ipp.tools"
-    PRIMARY_COLOR = "#00c4cc"
-    FRAMEWORK_TYPE = "neuralnarrative"
-    FRAMEWORK_ID = "neuralnarrative"
-    FRAMEWORK_NAME = "NeuralNarrative Framework"
-    FRAMEWORK_DESCRIPTION = "Craft stories that bypass conscious filtering and speak directly to the limbic system"
-    FRAMEWORK_STATUS = "waitlist"
-
-# PrimalPositioning subdomain
-[[contexts]]
-  for = "/sites/primalposition/*"
-  [contexts.environment]
-    SITE_DOMAIN = "primalposition.ipp.tools"
-    PRIMARY_COLOR = "#ff5a5f"
-    FRAMEWORK_TYPE = "primalposition"
-    FRAMEWORK_ID = "primalposition"
-    FRAMEWORK_NAME = "PrimalPositioning Framework"
-    FRAMEWORK_DESCRIPTION = "Evolutionary psychology-based positioning strategies that activate tribal defense mechanisms"
-    FRAMEWORK_STATUS = "waitlist"
-
-# QuantumConversion subdomain
-[[contexts]]
-  for = "/sites/quantumconversion/*"
-  [contexts.environment]
-    SITE_DOMAIN = "quantumconversion.ipp.tools"
-    PRIMARY_COLOR = "#34d399"
-    FRAMEWORK_TYPE = "quantumconversion"
-    FRAMEWORK_ID = "quantumconversion"
-    FRAMEWORK_NAME = "QuantumConversion Framework"
-    FRAMEWORK_DESCRIPTION = "Multi-dimensional conversion frameworks that work across all psychological profiles"
-    FRAMEWORK_STATUS = "waitlist"
-
-# Free tools subdomains
-[[contexts]]
-  for = "/sites/algodecoder/*"
-  [contexts.environment]
-    SITE_DOMAIN = "algodecoder.ipp.tools"
-    PRIMARY_COLOR = "#f59e0b"
-    FRAMEWORK_TYPE = "free"
-    FRAMEWORK_ID = "algodecoder"
-    FRAMEWORK_NAME = "AlgoDecoder"
-    FRAMEWORK_DESCRIPTION = "Decode the exact psychological patterns each social algorithm rewards"
-    UPSELL_FRAMEWORK = "cascadevibe"
-
-[[contexts]]
-  for = "/sites/neurocopy/*"
-  [contexts.environment]
-    SITE_DOMAIN = "neurocopy.ipp.tools"
-    PRIMARY_COLOR = "#8b5cf6"
-    FRAMEWORK_TYPE = "free"
-    FRAMEWORK_ID = "neurocopy"
-    FRAMEWORK_NAME = "NeuroCopy"
-    FRAMEWORK_DESCRIPTION = "Test your copy against the 17 neurological triggers that drive action"
-    UPSELL_FRAMEWORK = "quantumconversion"
-
-[[contexts]]
-  for = "/sites/identitymapper/*"
-  [contexts.environment]
-    SITE_DOMAIN = "identitymapper.ipp.tools"
-    PRIMARY_COLOR = "#ec4899"
-    FRAMEWORK_TYPE = "free"
-    FRAMEWORK_ID = "identitymapper"
-    FRAMEWORK_NAME = "IdentityMapper"
-    FRAMEWORK_DESCRIPTION = "Map the exact identity triggers that activate tribal responses in your audience"
-    UPSELL_FRAMEWORK = "primalposition"
 
 # Domain-specific redirects for cross-domain routing
 
@@ -181,21 +111,7 @@
   [headers.values]
     Cache-Control = "public, max-age=604800"
 
-# Dependency Optimization
-[build.processing]
-  skip_processing = false
-  [build.processing.css]
-    bundle = true
-    minify = true
-  [build.processing.js]
-    bundle = true
-    minify = true
-  [build.processing.html]
-    pretty_urls = true
-  [build.processing.images]
-    compress = true
-
 # Visualization generation configuration
 [build.environment]
   GENERATE_VISUALIZATIONS = "true"
-  VISUALIZATION_OUTPUT_DIR = "public/assets/visualizations"
+  VISUALIZATION_OUTPUT_DIR = "sites/ipp-main/public/assets/visualizations"
