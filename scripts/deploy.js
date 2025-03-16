@@ -89,6 +89,15 @@ try {
     console.log('Will attempt to continue with build...');
   }
 
+  // Ensure lerna is available
+  console.log('🔍 Verifying lerna availability...');
+  try {
+    execSync('node scripts/ensure-lerna.js', { stdio: 'inherit' });
+  } catch (lernaError) {
+    console.error(`❌ Lerna verification failed: ${lernaError.message}`);
+    console.log('Attempting to continue with build...');
+  }
+
   // Generate visualizations first - with force flag set to false to prevent regeneration
   console.log('🎨 Generating visualizations...');
   try {
@@ -105,12 +114,26 @@ try {
   // Build the site - using npx to ensure lerna is available
   console.log(`🏗️ Building site with command: ${config.buildCommand}`);
   try {
+    // First attempt with npx
     execSync(config.buildCommand, { stdio: 'inherit' });
     console.log(`✅ Build completed successfully. Output directory: ${config.outputDir}`);
   } catch (buildError) {
     console.error(`❌ Build failed: ${buildError.message}`);
-    releaseDeploymentLock(); // Release lock on error
-    process.exit(1);
+    console.log('🔄 Attempting fallback build method...');
+    
+    try {
+      // Fallback to direct node_modules path
+      const localLernaBin = path.join(__dirname, '..', 'node_modules', '.bin', 'lerna');
+      const fallbackCommand = config.buildCommand.replace('npx lerna', `node "${localLernaBin}"`);
+      console.log(`🔄 Executing fallback command: ${fallbackCommand}`);
+      
+      execSync(fallbackCommand, { stdio: 'inherit' });
+      console.log(`✅ Fallback build completed successfully. Output directory: ${config.outputDir}`);
+    } catch (fallbackError) {
+      console.error(`❌ Fallback build also failed: ${fallbackError.message}`);
+      releaseDeploymentLock(); // Release lock on error
+      process.exit(1);
+    }
   }
 
   // Copy the _redirects file if needed
