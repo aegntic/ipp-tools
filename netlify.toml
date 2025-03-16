@@ -4,16 +4,9 @@
 
 [build.environment]
   NODE_VERSION = "18.20.7"
-  NPM_FLAGS = "--no-audit --no-fund --prefer-offline --no-package-lock"
+  NPM_FLAGS = "--no-audit --no-fund --prefer-offline"
   NETLIFY_USE_YARN = "false"
-  
-[build.processing]
-  skip_processing = true
 
-# Force skip dependency installation since we're using a static build
-[plugins.inputs]
-  enable_npm_install = false
-  
 # Cache configuration for improved deployment reliability
 [[headers]]
   for = "/*"
