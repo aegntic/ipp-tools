@@ -7,38 +7,39 @@
     "sites/*"
   ],
   "scripts": {
-    "start": "lerna run start --parallel",
-    "dev": "lerna run dev --scope=ipp-main --stream",
-    "dev:ipp": "lerna run dev --scope=ipp-main --stream",
-    "dev:cascadevibe": "lerna run dev --scope=cascadevibe --stream",
+    "start": "npx lerna run start --parallel",
+    "dev": "npx lerna run dev --scope=ipp-main --stream",
+    "dev:ipp": "npx lerna run dev --scope=ipp-main --stream",
+    "dev:cascadevibe": "npx lerna run dev --scope=cascadevibe --stream",
     "prebuild": "npm run generate:visualizations",
-    "build": "lerna run build",
+    "build": "npx lerna run build",
     
     "build:ipp": "node scripts/deploy.js",
-    "build:ipp:direct": "lerna run build --scope=ipp-main",
+    "build:ipp:direct": "npx lerna run build --scope=ipp-main",
     
     "build:cascadevibe": "node scripts/deploy.js",
-    "build:cascadevibe:direct": "npm run generate:visualizations:cascadevibe && lerna run build --scope=cascadevibe",
+    "build:cascadevibe:direct": "npm run generate:visualizations:cascadevibe && npx lerna run build --scope=cascadevibe",
     
     "build:neuralnarrative": "node scripts/deploy.js",
-    "build:neuralnarrative:direct": "lerna run build --scope=neuralnarrative",
+    "build:neuralnarrative:direct": "npx lerna run build --scope=neuralnarrative",
     
     "build:primalposition": "node scripts/deploy.js",
-    "build:primalposition:direct": "lerna run build --scope=primalposition",
+    "build:primalposition:direct": "npx lerna run build --scope=primalposition",
     
     "build:quantumconversion": "node scripts/deploy.js",
-    "build:quantumconversion:direct": "lerna run build --scope=quantumconversion",
+    "build:quantumconversion:direct": "npx lerna run build --scope=quantumconversion",
     
-    "build:all": "npm run generate:visualizations:all && lerna run build",
+    "build:all": "npm run generate:visualizations:all && npx lerna run build",
     "deploy": "node scripts/deploy.js",
-    "test": "lerna run test",
-    "clean": "lerna clean",
-    "bootstrap": "lerna bootstrap",
+    "test": "npx lerna run test",
+    "clean": "npx lerna clean",
+    "bootstrap": "npx lerna bootstrap",
     "lint": "eslint .",
     "generate:visualizations": "node scripts/visualization/generate-glass-visualizations.js",
     "generate:visualizations:ipp": "node scripts/visualization/generate-glass-visualizations.js -o sites/ipp-main/public/assets/visualizations",
     "generate:visualizations:cascadevibe": "node scripts/visualization/generate-glass-visualizations.js -o sites/cascadevibe/public/assets/visualizations",
-    "generate:visualizations:all": "npm run generate:visualizations && npm run generate:visualizations:ipp && npm run generate:visualizations:cascadevibe"
+    "generate:visualizations:all": "npm run generate:visualizations && npm run generate:visualizations:ipp && npm run generate:visualizations:cascadevibe",
+    "postinstall": "npm install -g lerna@8.1.2"
   },
   "dependencies": {
     "@svgdotjs/svg.js": "^3.2.0",
@@ -55,5 +56,8 @@
     "lerna": "^8.1.2",
     "lint-staged": "^15.2.2",
     "prettier": "^3.2.5"
+  },
+  "engines": {
+    "node": ">=16.0.0"
   }
 }
