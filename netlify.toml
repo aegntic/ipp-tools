@@ -1,5 +1,5 @@
 [build]
-  command = "bash scripts/build-wrapper.sh"
+  command = "npm install --no-save @netlify/plugin-nextjs && bash scripts/build-wrapper.sh"
   publish = "sites/ipp-main/dist"
   
 [build.environment]
@@ -12,16 +12,12 @@
   bundle = true
   minify = true
 
-# Cache node_modules for faster builds
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
-
 # Per-site configuration
 [context.production]
-  command = "bash scripts/build-wrapper.sh"
+  command = "npm install --no-save @netlify/plugin-nextjs && bash scripts/build-wrapper.sh"
   
 [context.deploy-preview]
-  command = "bash scripts/build-wrapper.sh"
+  command = "npm install --no-save @netlify/plugin-nextjs && bash scripts/build-wrapper.sh"
 
 # Site-specific environment variables
 [context.production.environment]
