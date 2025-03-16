@@ -1,89 +1,47 @@
-# Main Netlify configuration for the IPP.TOOLS ecosystem
-
 [build]
-  base = "/"
-  command = "npm install && npm run build:ipp"
+  command = "scripts/build-wrapper.sh"
   publish = "sites/ipp-main/dist"
-
-[context.production]
-  environment = { NODE_ENV = "production", TRACKING_ENABLED = "true", GENERATE_VISUALIZATIONS = "true", SITE_DOMAIN = "ipp.tools", PRIMARY_COLOR = "#5468ff", FRAMEWORK_TYPE = "main" }
-
-[context.staging]
-  environment = { NODE_ENV = "staging", TRACKING_ENABLED = "true", STAGING_INDICATOR = "true", GENERATE_VISUALIZATIONS = "true" }
-
-[context.branch-deploy]
-  environment = { NODE_ENV = "development", TRACKING_ENABLED = "false", GENERATE_VISUALIZATIONS = "true" }
-
-# Domain-specific redirects for cross-domain routing
-[[redirects]]
-  from = "https://ipp.tools/frameworks/cascadevibe/*"
-  to = "https://cascadevibe.com/:splat"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "https://ipp.tools/frameworks/neuralnarrative/*"
-  to = "https://neuralnarrative.ipp.tools/:splat"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "https://ipp.tools/frameworks/primalposition/*"
-  to = "https://primalposition.ipp.tools/:splat"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "https://ipp.tools/frameworks/quantumconversion/*"
-  to = "https://quantumconversion.ipp.tools/:splat"
-  status = 301
-  force = true
-
-# Framework-specific waitlist redirects
-[[redirects]]
-  from = "/waitlist"
-  to = "/waitlist.html"
-  status = 200
-  force = true
-
-# SPA fallback for client-side routing
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-
-# Performance optimization and caching
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Frame-Options = "DENY"
-    X-XSS-Protection = "1; mode=block"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://tracking.ipp.tools; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.ipp.tools https://cascadevibe.com; connect-src 'self' https://*.ipp.tools https://api.ipp.tools https://tracking.ipp.tools https://cascadevibe.com;"
-    Referrer-Policy = "strict-origin-when-cross-origin"
-    Cache-Control = "public, max-age=3600"
-
-# Cache static assets more aggressively
-[[headers]]
-  for = "/*.js"
-  [headers.values]
-    Cache-Control = "public, max-age=86400"
-
-[[headers]]
-  for = "/*.css"
-  [headers.values]
-    Cache-Control = "public, max-age=86400"
-
-[[headers]]
-  for = "/images/*"
-  [headers.values]
-    Cache-Control = "public, max-age=604800"
-
-[[headers]]
-  for = "/assets/visualizations/*"
-  [headers.values]
-    Cache-Control = "public, max-age=604800"
-
-# Visualization generation configuration
+  
 [build.environment]
-  GENERATE_VISUALIZATIONS = "true"
-  VISUALIZATION_OUTPUT_DIR = "sites/ipp-main/public/assets/visualizations"
+  NODE_VERSION = "18"
+  NPM_VERSION = "9"
+  
+# Dependency management optimization
+[build.processing.js]
+  bundle = true
+  minify = true
+
+# Cache node_modules for faster builds
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Per-site configuration
+[context.production]
+  command = "scripts/build-wrapper.sh"
+  
+[context.deploy-preview]
+  command = "scripts/build-wrapper.sh"
+
+# Site-specific environment variables
+[context.production.environment]
+  SITE_DOMAIN = "ipp.tools"
+  NODE_ENV = "production"
+
+# Redirects for multi-site setup
+[[redirects]]
+  from = "https://neuralnarrative.ipp.tools/*"
+  to = "/waitlist/neuralnarrative/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "https://primalposition.ipp.tools/*"
+  to = "/waitlist/primalposition/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "https://quantumconversion.ipp.tools/*"
+  to = "/waitlist/quantumconversion/index.html"
+  status = 200
+  force = true
