@@ -1,13 +1,7 @@
 [build]
-  publish = "sites/ipp-main/dist"
-  command = "bash build.sh"
+  publish = "dist"
+  command = ""
 
-[build.environment]
-  NODE_VERSION = "18.20.7"
-  NPM_FLAGS = "--no-audit --no-fund --prefer-offline"
-  NETLIFY_USE_YARN = "false"
-
-# Cache configuration for improved deployment reliability
 [[headers]]
   for = "/*"
   [headers.values]
