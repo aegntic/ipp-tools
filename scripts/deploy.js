@@ -25,27 +25,27 @@ if (!createDeploymentLock(site)) {
 // Map domains to site directories and build commands
 const siteConfig = {
   'ipp.tools': {
-    buildCommand: 'npm run build:ipp:direct',
+    buildCommand: 'npx lerna run build --scope=ipp-main',
     directory: 'sites/ipp-main',
     outputDir: 'sites/ipp-main/dist'
   },
   'cascadevibe.com': {
-    buildCommand: 'npm run build:cascadevibe:direct',
+    buildCommand: 'npm run generate:visualizations:cascadevibe && npx lerna run build --scope=cascadevibe',
     directory: 'sites/cascadevibe',
     outputDir: 'sites/cascadevibe/dist'
   },
   'neuralnarrative.ipp.tools': {
-    buildCommand: 'npm run build:neuralnarrative:direct',
+    buildCommand: 'npx lerna run build --scope=neuralnarrative',
     directory: 'sites/neuralnarrative',
     outputDir: 'sites/neuralnarrative/dist'
   },
   'primalposition.ipp.tools': {
-    buildCommand: 'npm run build:primalposition:direct',
+    buildCommand: 'npx lerna run build --scope=primalposition',
     directory: 'sites/primalposition',
     outputDir: 'sites/primalposition/dist'
   },
   'quantumconversion.ipp.tools': {
-    buildCommand: 'npm run build:quantumconversion:direct',
+    buildCommand: 'npx lerna run build --scope=quantumconversion',
     directory: 'sites/quantumconversion',
     outputDir: 'sites/quantumconversion/dist'
   }
@@ -102,7 +102,7 @@ try {
     console.error(`Visualization error details: ${visualizationError.message}`);
   }
 
-  // Build the site - using the non-recursive direct command
+  // Build the site - using npx to ensure lerna is available
   console.log(`🏗️ Building site with command: ${config.buildCommand}`);
   try {
     execSync(config.buildCommand, { stdio: 'inherit' });
