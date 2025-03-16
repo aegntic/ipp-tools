@@ -1,0 +1,33 @@
+# Netlify headers configuration
+
+# All assets should receive appropriate caching
+/assets/js/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/css/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/media/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/img/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# HTML files should never be cached to ensure latest content
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Main index should never be cached
+/
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Security headers for all routes
+/*
+  X-Frame-Options: DENY
+  X-XSS-Protection: 1; mode=block
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' *.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: *.google-analytics.com; connect-src 'self' *.google-analytics.com; font-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'
