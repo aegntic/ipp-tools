@@ -1,29 +1,16 @@
 [build]
-  command = "bash build-wrapper.sh"
+  command = "npm run build:ipp:direct"
   publish = "sites/ipp-main/dist"
   
 [build.environment]
   NODE_VERSION = "18"
   NPM_VERSION = "9"
   GO_VERSION = "1.20"
-  
-# Dependency management optimization
-[build.processing.js]
-  bundle = true
-  minify = true
-
-# Per-site configuration
-[context.production]
-  command = "bash build-wrapper.sh"
-  
-[context.deploy-preview]
-  command = "bash build-wrapper.sh"
 
 # Site-specific environment variables
 [context.production.environment]
   SITE_DOMAIN = "ipp.tools"
   NODE_ENV = "production"
-  GO_VERSION = "1.20"
 
 # Redirects for multi-site setup
 [[redirects]]
