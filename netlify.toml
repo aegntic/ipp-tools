@@ -1,8 +1,62 @@
 [build]
-  publish = "dist"
-  command = ""
+  command = "npm run build"
+  publish = "sites/ipp-main/build"
+
+# Production environment context
+[context.production]
+  command = "npm run build"
+
+# Deployment branch context
+[context.deploy-preview]
+  command = "npm run build"
+
+# Build environment configuration
+[build.environment]
+  NODE_VERSION = "18.20.7"
+  NPM_FLAGS = "--no-audit --no-fund --production=false"
+  CI = "true"
+
+# Performance optimization directives
+[build.processing]
+  skip_processing = false
+
+[build.processing.css]
+  bundle = true
+  minify = true
+
+[build.processing.js]
+  bundle = true
+  minify = true
+
+[build.processing.html]
+  pretty_urls = true
+
+[build.processing.images]
+  compress = true
+
+# SPA routing configuration - critical for React Router
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Cache control directives
+[[headers]]
+  for = "/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
-  for = "/*"
+  for = "/*.js"
   [headers.values]
-    Cache-Control = "public, max-age=3600"
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
