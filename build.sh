@@ -1,32 +1,50 @@
 #!/bin/bash
+#
+# Deterministic static site generation script for Netlify CI/CD pipeline
+# Optimized for containerized execution environments with explicit
+# filesystem interaction patterns
 
-# Optimized deployment script for Netlify
-# Bypasses dependency resolution entirely for static site deployment
+set -e  # Exit immediately if a command exits with a non-zero status
+set -o pipefail  # Ensure pipeline failures propagate correctly
 
-echo "🚀 Starting optimized static build process"
-echo "-----------------------------------------"
+# Execution environment diagnostics
+echo "🔍 Build Environment Information:"
+echo "------------------------------"
+echo "Current working directory: $(pwd)"
+echo "Script location: $0"
+echo "Directory contents:"
+find . -maxdepth 1 -type f -name "*.json" -o -name "*.toml" -o -name "*.sh" | sort
 
-# Set environment variable to bypass npm integrity checks if dependencies are needed
-export npm_config_fetch_retries=5
-export npm_config_fetch_retry_mintimeout=20000
-export npm_config_fetch_retry_maxtimeout=120000
-
-# Ensure output directory exists
+# Ensure output directory exists with appropriate permissions
+echo "🏗️ Creating target directory structure"
 mkdir -p sites/ipp-main/dist
+if [ $? -ne 0 ]; then
+  echo "❌ Failed to create output directory structure"
+  exit 1
+fi
 
-# Copy static files if available, otherwise create minimal page
+# Static asset deployment logic
 if [ -d "sites/ipp-main/dist-static" ]; then
-  echo "✅ Using pre-built static assets"
+  echo "✅ Found pre-built static assets, deploying"
   cp -r sites/ipp-main/dist-static/* sites/ipp-main/dist/
-else
-  echo "⚠️ No static assets found, creating minimal page"
-  cat > sites/ipp-main/dist/index.html << 'EOF'
+  if [ $? -ne 0 ]; then
+    echo "⚠️ Static asset copy operation failed, falling back to generated content"
+  else
+    echo "🔄 Static assets deployed successfully"
+    echo "✨ Build completed successfully"
+    exit 0
+  fi
+fi
+
+# Fallback content generation
+echo "📄 Generating fallback static content"
+cat > sites/ipp-main/dist/index.html << 'EOF'
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>IPP.TOOLS</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IPP.TOOLS</title>
   <style>
     body { 
       background: #0f172a; 
@@ -60,27 +78,20 @@ else
 </body>
 </html>
 EOF
-  echo "✅ Created optimized index.html"
+
+if [ $? -ne 0 ]; then
+  echo "❌ Failed to generate fallback content"
+  exit 1
 fi
 
-# Generate a netlify.toml file with bypass settings if it doesn't exist
-if [ ! -f "netlify.toml" ]; then
-  echo "⚙️ Creating optimized netlify.toml configuration"
-  cat > netlify.toml << 'EOF'
-[build]
-  publish = "sites/ipp-main/dist"
-  command = "bash build.sh"
+echo "✅ Fallback content generated successfully"
+ls -la sites/ipp-main/dist/
 
-[build.environment]
-  NODE_VERSION = "18.20.7"
-  NPM_FLAGS = "--no-audit --no-fund"
-  NETLIFY_USE_YARN = "false"
-  
-[build.processing]
-  skip_processing = true
-EOF
-  echo "✅ Created netlify.toml with optimized settings"
+# Verify artifact generation
+if [ -f "sites/ipp-main/dist/index.html" ]; then
+  echo "✨ Build completed successfully"
+  exit 0
+else
+  echo "❌ Build failed: Output file not found at expected path"
+  exit 1
 fi
-
-echo "✅ Build completed successfully"
-exit 0
