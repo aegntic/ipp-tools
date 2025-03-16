@@ -1,17 +1,22 @@
 #!/bin/bash
 
-# Optimized deployment script for Netlify
-# Bypasses dependency resolution entirely for static site deployment
+# Optimized deployment script for Netlify CI/CD orchestration
+# Static site generation with deterministic execution path
 
-echo "🚀 Starting optimized static build process"
+echo "🚀 Starting deterministic build process"
 echo "-----------------------------------------"
 
-# Set environment variable to bypass npm integrity checks if dependencies are needed
+# Diagnostic information for CI/CD observability
+echo "📂 Current directory: $(pwd)"
+echo "📋 Directory contents:"
+ls -la
+
+# Set environment variables for network resilience
 export npm_config_fetch_retries=5
 export npm_config_fetch_retry_mintimeout=20000
 export npm_config_fetch_retry_maxtimeout=120000
 
-# Ensure output directory exists
+# Ensure output directory exists with explicit path resolution
 mkdir -p sites/ipp-main/dist
 
 # Copy static files if available, otherwise create minimal page
@@ -61,25 +66,6 @@ else
 </html>
 EOF
   echo "✅ Created optimized index.html"
-fi
-
-# Generate a netlify.toml file with bypass settings if it doesn't exist
-if [ ! -f "netlify.toml" ]; then
-  echo "⚙️ Creating optimized netlify.toml configuration"
-  cat > netlify.toml << 'EOF'
-[build]
-  publish = "sites/ipp-main/dist"
-  command = "bash build.sh"
-
-[build.environment]
-  NODE_VERSION = "18.20.7"
-  NPM_FLAGS = "--no-audit --no-fund"
-  NETLIFY_USE_YARN = "false"
-  
-[build.processing]
-  skip_processing = true
-EOF
-  echo "✅ Created netlify.toml with optimized settings"
 fi
 
 echo "✅ Build completed successfully"
