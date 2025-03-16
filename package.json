@@ -11,7 +11,9 @@
     "dev": "npx lerna run dev --scope=ipp-main --stream",
     "dev:ipp": "npx lerna run dev --scope=ipp-main --stream",
     "dev:cascadevibe": "npx lerna run dev --scope=cascadevibe --stream",
-    "prebuild": "npm run generate:visualizations",
+    "preinstall": "node -e \"console.log('🔄 Installing dependencies...')\"",
+    "postinstall": "node scripts/make-executable.js",
+    "prebuild": "node scripts/make-executable.js && npm run generate:visualizations",
     "build": "npx lerna run build",
     
     "build:ipp": "node scripts/deploy.js",
@@ -30,7 +32,7 @@
     "build:quantumconversion:direct": "npx lerna run build --scope=quantumconversion",
     
     "build:all": "npm run generate:visualizations:all && npx lerna run build",
-    "deploy": "node scripts/deploy.js",
+    "deploy": "bash scripts/build-wrapper.sh",
     "test": "npx lerna run test",
     "clean": "npx lerna clean",
     "bootstrap": "npx lerna bootstrap",
@@ -39,7 +41,7 @@
     "generate:visualizations:ipp": "node scripts/visualization/generate-glass-visualizations.js -o sites/ipp-main/public/assets/visualizations",
     "generate:visualizations:cascadevibe": "node scripts/visualization/generate-glass-visualizations.js -o sites/cascadevibe/public/assets/visualizations",
     "generate:visualizations:all": "npm run generate:visualizations && npm run generate:visualizations:ipp && npm run generate:visualizations:cascadevibe",
-    "postinstall": "npm install -g lerna@8.1.2"
+    "prepare": "node scripts/make-executable.js"
   },
   "dependencies": {
     "@svgdotjs/svg.js": "^3.2.0",
