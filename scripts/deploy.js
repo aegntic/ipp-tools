@@ -25,27 +25,27 @@ if (!createDeploymentLock(site)) {
 // Map domains to site directories and build commands
 const siteConfig = {
   'ipp.tools': {
-    buildCommand: 'npm run build:ipp',
+    buildCommand: 'npm run build:ipp:direct',
     directory: 'sites/ipp-main',
     outputDir: 'sites/ipp-main/dist'
   },
   'cascadevibe.com': {
-    buildCommand: 'npm run build:cascadevibe',
+    buildCommand: 'npm run build:cascadevibe:direct',
     directory: 'sites/cascadevibe',
     outputDir: 'sites/cascadevibe/dist'
   },
   'neuralnarrative.ipp.tools': {
-    buildCommand: 'npm run build:neuralnarrative',
+    buildCommand: 'npm run build:neuralnarrative:direct',
     directory: 'sites/neuralnarrative',
     outputDir: 'sites/neuralnarrative/dist'
   },
   'primalposition.ipp.tools': {
-    buildCommand: 'npm run build:primalposition',
+    buildCommand: 'npm run build:primalposition:direct',
     directory: 'sites/primalposition',
     outputDir: 'sites/primalposition/dist'
   },
   'quantumconversion.ipp.tools': {
-    buildCommand: 'npm run build:quantumconversion',
+    buildCommand: 'npm run build:quantumconversion:direct',
     directory: 'sites/quantumconversion',
     outputDir: 'sites/quantumconversion/dist'
   }
@@ -102,22 +102,10 @@ try {
     console.error(`Visualization error details: ${visualizationError.message}`);
   }
 
-  // Build the site only once - prevent recursive calls to this script
+  // Build the site - using the non-recursive direct command
   console.log(`🏗️ Building site with command: ${config.buildCommand}`);
   try {
-    // Extract the actual build command from package.json to avoid self-reference
-    const packageJson = require('../package.json');
-    const scriptKey = config.buildCommand.replace('npm run ', '');
-    const actualBuildCommand = packageJson.scripts[scriptKey];
-    
-    if (!actualBuildCommand) {
-      throw new Error(`Build command "${scriptKey}" not found in package.json scripts`);
-    }
-    
-    // Execute the actual build command instead of the npm script to avoid recursion
-    console.log(`📋 Executing actual build command: ${actualBuildCommand}`);
-    execSync(actualBuildCommand, { stdio: 'inherit' });
-    
+    execSync(config.buildCommand, { stdio: 'inherit' });
     console.log(`✅ Build completed successfully. Output directory: ${config.outputDir}`);
   } catch (buildError) {
     console.error(`❌ Build failed: ${buildError.message}`);
