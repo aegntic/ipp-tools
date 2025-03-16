@@ -13,8 +13,22 @@
     "dev:cascadevibe": "lerna run dev --scope=cascadevibe --stream",
     "prebuild": "npm run generate:visualizations",
     "build": "lerna run build",
+    
     "build:ipp": "node scripts/deploy.js",
-    "build:cascadevibe": "npm run generate:visualizations:cascadevibe && lerna run build --scope=cascadevibe",
+    "build:ipp:direct": "lerna run build --scope=ipp-main",
+    
+    "build:cascadevibe": "node scripts/deploy.js",
+    "build:cascadevibe:direct": "npm run generate:visualizations:cascadevibe && lerna run build --scope=cascadevibe",
+    
+    "build:neuralnarrative": "node scripts/deploy.js",
+    "build:neuralnarrative:direct": "lerna run build --scope=neuralnarrative",
+    
+    "build:primalposition": "node scripts/deploy.js",
+    "build:primalposition:direct": "lerna run build --scope=primalposition",
+    
+    "build:quantumconversion": "node scripts/deploy.js",
+    "build:quantumconversion:direct": "lerna run build --scope=quantumconversion",
+    
     "build:all": "npm run generate:visualizations:all && lerna run build",
     "deploy": "node scripts/deploy.js",
     "test": "lerna run test",

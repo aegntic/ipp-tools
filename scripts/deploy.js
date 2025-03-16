@@ -10,35 +10,42 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
+const { createDeploymentLock, releaseDeploymentLock } = require('./deployment-lock');
 
 // Determine which site to deploy based on environment variable
 const site = process.env.SITE_DOMAIN || 'ipp.tools';
 console.log(`🚀 Deploying site: ${site}`);
 
+// Check for recursive deployment - abort if detected
+if (!createDeploymentLock(site)) {
+  console.error('⛔ Deployment aborted due to recursive loop detection');
+  process.exit(1);
+}
+
 // Map domains to site directories and build commands
 const siteConfig = {
   'ipp.tools': {
-    buildCommand: 'npm run build:ipp',
+    buildCommand: 'npm run build:ipp:direct',
     directory: 'sites/ipp-main',
     outputDir: 'sites/ipp-main/dist'
   },
   'cascadevibe.com': {
-    buildCommand: 'npm run build:cascadevibe',
+    buildCommand: 'npm run build:cascadevibe:direct',
     directory: 'sites/cascadevibe',
     outputDir: 'sites/cascadevibe/dist'
   },
   'neuralnarrative.ipp.tools': {
-    buildCommand: 'npm run build:neuralnarrative',
+    buildCommand: 'npm run build:neuralnarrative:direct',
     directory: 'sites/neuralnarrative',
     outputDir: 'sites/neuralnarrative/dist'
   },
   'primalposition.ipp.tools': {
-    buildCommand: 'npm run build:primalposition',
+    buildCommand: 'npm run build:primalposition:direct',
     directory: 'sites/primalposition',
     outputDir: 'sites/primalposition/dist'
   },
   'quantumconversion.ipp.tools': {
-    buildCommand: 'npm run build:quantumconversion',
+    buildCommand: 'npm run build:quantumconversion:direct',
     directory: 'sites/quantumconversion',
     outputDir: 'sites/quantumconversion/dist'
   }
@@ -56,6 +63,7 @@ try {
       console.log(`✅ Created site directory: ${config.directory}`);
     } catch (dirError) {
       console.error(`❌ Failed to create site directory: ${dirError.message}`);
+      releaseDeploymentLock(); // Release lock on error
       process.exit(1);
     }
   }
@@ -81,7 +89,7 @@ try {
     console.log('Will attempt to continue with build...');
   }
 
-  // Generate visualizations first
+  // Generate visualizations first - with force flag set to false to prevent regeneration
   console.log('🎨 Generating visualizations...');
   try {
     execSync(`node scripts/visualization/generate-glass-visualizations.js -o ${visualizationDir}`, { 
@@ -94,13 +102,14 @@ try {
     console.error(`Visualization error details: ${visualizationError.message}`);
   }
 
-  // Build the site
+  // Build the site - using the non-recursive direct command
   console.log(`🏗️ Building site with command: ${config.buildCommand}`);
   try {
     execSync(config.buildCommand, { stdio: 'inherit' });
     console.log(`✅ Build completed successfully. Output directory: ${config.outputDir}`);
   } catch (buildError) {
     console.error(`❌ Build failed: ${buildError.message}`);
+    releaseDeploymentLock(); // Release lock on error
     process.exit(1);
   }
 
@@ -118,7 +127,15 @@ try {
   }
 
   console.log('🚀 Deployment preparation complete!');
+  
+  // Release the deployment lock when everything is done
+  releaseDeploymentLock();
+  
 } catch (error) {
   console.error('❌ Deployment script failed:', error.message);
+  
+  // Make sure to release the lock on any error
+  releaseDeploymentLock();
+  
   process.exit(1);
 }
