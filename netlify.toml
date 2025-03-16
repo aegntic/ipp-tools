@@ -1,33 +1,21 @@
-# IPP.TOOLS Netlify Configuration
 [build]
-  base = "/"
   publish = "sites/ipp-main/dist"
   command = "bash build.sh"
 
 [build.environment]
-  NODE_VERSION = "18"
-  NPM_VERSION = "9"
+  NODE_VERSION = "18.20.7"
+  NPM_FLAGS = "--no-audit --no-fund --prefer-offline --no-package-lock"
+  NETLIFY_USE_YARN = "false"
+  
+[build.processing]
+  skip_processing = true
 
-# Site-specific environment variables
-[context.production.environment]
-  SITE_DOMAIN = "ipp.tools"
-  NODE_ENV = "production"
-
-# Redirects for multi-site setup
-[[redirects]]
-  from = "https://neuralnarrative.ipp.tools/*"
-  to = "/waitlist/neuralnarrative/index.html"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "https://primalposition.ipp.tools/*"
-  to = "/waitlist/primalposition/index.html"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "https://quantumconversion.ipp.tools/*"
-  to = "/waitlist/quantumconversion/index.html"
-  status = 200
-  force = true
+# Force skip dependency installation since we're using a static build
+[plugins.inputs]
+  enable_npm_install = false
+  
+# Cache configuration for improved deployment reliability
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"

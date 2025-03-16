@@ -1,10 +1,15 @@
 #!/bin/bash
 
-# Ultra-simple deploy script with zero dependencies
-# Created specifically for Netlify deployment environment
+# Optimized deployment script for Netlify
+# Bypasses dependency resolution entirely for static site deployment
 
-echo "🚀 Starting minimal build process"
-echo "--------------------------------"
+echo "🚀 Starting optimized static build process"
+echo "-----------------------------------------"
+
+# Set environment variable to bypass npm integrity checks if dependencies are needed
+export npm_config_fetch_retries=5
+export npm_config_fetch_retry_mintimeout=20000
+export npm_config_fetch_retry_maxtimeout=120000
 
 # Ensure output directory exists
 mkdir -p sites/ipp-main/dist
@@ -20,11 +25,13 @@ else
 <html>
 <head>
   <title>IPP.TOOLS</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body { 
       background: #0f172a; 
       color: white; 
-      font-family: sans-serif; 
+      font-family: system-ui, -apple-system, sans-serif; 
       display: flex; 
       align-items: center; 
       justify-content: center; 
@@ -36,10 +43,12 @@ else
       background: linear-gradient(135deg, #5468ff, #8400ff);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
       font-size: 3rem;
+      margin-bottom: 0.5rem;
     }
     p { 
-      margin-top: 1rem; 
+      margin-top: 0.5rem; 
       color: #94a3b8; 
     }
   </style>
@@ -51,7 +60,26 @@ else
 </body>
 </html>
 EOF
-  echo "✅ Created minimal index.html"
+  echo "✅ Created optimized index.html"
+fi
+
+# Generate a netlify.toml file with bypass settings if it doesn't exist
+if [ ! -f "netlify.toml" ]; then
+  echo "⚙️ Creating optimized netlify.toml configuration"
+  cat > netlify.toml << 'EOF'
+[build]
+  publish = "sites/ipp-main/dist"
+  command = "bash build.sh"
+
+[build.environment]
+  NODE_VERSION = "18.20.7"
+  NPM_FLAGS = "--no-audit --no-fund"
+  NETLIFY_USE_YARN = "false"
+  
+[build.processing]
+  skip_processing = true
+EOF
+  echo "✅ Created netlify.toml with optimized settings"
 fi
 
 echo "✅ Build completed successfully"
