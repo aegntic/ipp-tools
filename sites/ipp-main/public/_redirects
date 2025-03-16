@@ -1,7 +1,2 @@
-# Netlify SPA redirect configuration
-# Redirect all requests to index.html for client-side routing
+# React Router client-side routing support
 /*    /index.html   200
-
-# Cache control directives
-/assets/*  /assets/:splat  200
-/static/*  /static/:splat  200
