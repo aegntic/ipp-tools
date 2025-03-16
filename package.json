@@ -12,32 +12,17 @@
     "dev:ipp": "npx lerna run dev --scope=ipp-main --stream",
     "dev:cascadevibe": "npx lerna run dev --scope=cascadevibe --stream",
     "preinstall": "node -e \"console.log('🔄 Installing dependencies...')\"",
-    "build": "npx lerna run build",
-    
-    "build:ipp": "mkdir -p sites/ipp-main/dist && echo '<html><head><title>IPP.TOOLS</title></head><body><h1>IPP.TOOLS</h1><p>Coming Soon</p></body></html>' > sites/ipp-main/dist/index.html || lerna run build --scope=ipp-main",
-    "build:ipp:direct": "mkdir -p sites/ipp-main/dist && echo '<html><head><title>IPP.TOOLS</title></head><body><h1>IPP.TOOLS</h1><p>Coming Soon</p></body></html>' > sites/ipp-main/dist/index.html || lerna run build --scope=ipp-main",
-    
-    "build:cascadevibe": "mkdir -p sites/cascadevibe/dist && echo '<html><head><title>CascadeVibe</title></head><body><h1>CascadeVibe</h1><p>Coming Soon</p></body></html>' > sites/cascadevibe/dist/index.html || lerna run build --scope=cascadevibe",
-    "build:cascadevibe:direct": "mkdir -p sites/cascadevibe/dist && echo '<html><head><title>CascadeVibe</title></head><body><h1>CascadeVibe</h1><p>Coming Soon</p></body></html>' > sites/cascadevibe/dist/index.html || lerna run build --scope=cascadevibe",
-    
-    "build:neuralnarrative": "mkdir -p sites/neuralnarrative/dist && echo '<html><head><title>NeuralNarrative</title></head><body><h1>NeuralNarrative</h1><p>Coming Soon</p></body></html>' > sites/neuralnarrative/dist/index.html || lerna run build --scope=neuralnarrative",
-    "build:neuralnarrative:direct": "mkdir -p sites/neuralnarrative/dist && echo '<html><head><title>NeuralNarrative</title></head><body><h1>NeuralNarrative</h1><p>Coming Soon</p></body></html>' > sites/neuralnarrative/dist/index.html || lerna run build --scope=neuralnarrative",
-    
-    "build:primalposition": "mkdir -p sites/primalposition/dist && echo '<html><head><title>PrimalPosition</title></head><body><h1>PrimalPosition</h1><p>Coming Soon</p></body></html>' > sites/primalposition/dist/index.html || lerna run build --scope=primalposition",
-    "build:primalposition:direct": "mkdir -p sites/primalposition/dist && echo '<html><head><title>PrimalPosition</title></head><body><h1>PrimalPosition</h1><p>Coming Soon</p></body></html>' > sites/primalposition/dist/index.html || lerna run build --scope=primalposition",
-    
-    "build:quantumconversion": "mkdir -p sites/quantumconversion/dist && echo '<html><head><title>QuantumConversion</title></head><body><h1>QuantumConversion</h1><p>Coming Soon</p></body></html>' > sites/quantumconversion/dist/index.html || lerna run build --scope=quantumconversion",
-    "build:quantumconversion:direct": "mkdir -p sites/quantumconversion/dist && echo '<html><head><title>QuantumConversion</title></head><body><h1>QuantumConversion</h1><p>Coming Soon</p></body></html>' > sites/quantumconversion/dist/index.html || lerna run build --scope=quantumconversion",
-    
-    "build:all": "npm run build:ipp && npm run build:cascadevibe && npm run build:neuralnarrative && npm run build:primalposition && npm run build:quantumconversion",
-    "deploy": "npm run build:ipp",
+    "build": "npx lerna run build --scope=ipp-main",
+    "build:ci": "CI=true npx lerna run build --scope=ipp-main",
+    "build:ipp": "npx lerna run build --scope=ipp-main",
+    "analyze": "ANALYZE=true npx lerna run build --scope=ipp-main",
     "test": "npx lerna run test",
+    "lint": "npx lerna run lint",
     "clean": "npx lerna clean",
     "bootstrap": "npx lerna bootstrap",
-    "lint": "eslint ."
+    "postinstall": "npm run bootstrap"
   },
   "dependencies": {
-    "@netlify/plugin-nextjs": "4.41.2",
     "@svgdotjs/svg.js": "^3.2.0",
     "commander": "^11.1.0",
     "lerna": "^8.1.2",
@@ -55,8 +40,5 @@
   },
   "engines": {
     "node": ">=16.0.0"
-  },
-  "resolutions": {
-    "@netlify/plugin-nextjs": "4.41.2"
   }
 }
