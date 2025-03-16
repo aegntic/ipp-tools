@@ -12,15 +12,9 @@
     "dev:ipp": "npx lerna run dev --scope=ipp-main --stream",
     "dev:cascadevibe": "npx lerna run dev --scope=cascadevibe --stream",
     "preinstall": "node -e \"console.log('🔄 Installing dependencies...')\"",
-    "build": "npx lerna run build --scope=ipp-main",
-    "build:ci": "CI=true npx lerna run build --scope=ipp-main",
-    "build:ipp": "npx lerna run build --scope=ipp-main",
-    "analyze": "ANALYZE=true npx lerna run build --scope=ipp-main",
-    "test": "npx lerna run test",
-    "lint": "npx lerna run lint",
-    "clean": "npx lerna clean",
+    "build": "npx lerna run build",
     "bootstrap": "npx lerna bootstrap",
-    "postinstall": "npm run bootstrap"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@svgdotjs/svg.js": "^3.2.0",
