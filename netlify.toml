@@ -1,14 +1,12 @@
 # IPP.TOOLS Netlify Configuration
-
 [build]
   base = "/"
   publish = "sites/ipp-main/dist"
-  command = "mkdir -p sites/ipp-main/dist && cp -r sites/ipp-main/dist-static/* sites/ipp-main/dist/ 2>/dev/null || echo '<html><head><title>IPP.TOOLS</title></head><body><h1>IPP.TOOLS</h1><p>Coming Soon</p></body></html>' > sites/ipp-main/dist/index.html"
+  command = "bash build.sh"
 
 [build.environment]
   NODE_VERSION = "18"
   NPM_VERSION = "9"
-  GO_VERSION = "1.20"
 
 # Site-specific environment variables
 [context.production.environment]
