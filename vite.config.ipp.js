@@ -2,22 +2,39 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 
+// Determine build environment
+const isProduction = process.env.NODE_ENV === 'production'
+const isNetlify = process.env.NETLIFY === 'true'
+const analyzeBuild = process.env.ANALYZE === 'true'
+
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    // Conditionally add build analyzer if requested
+    analyzeBuild && {
+      name: 'build-analyzer',
+      writeBundle() {
+        // Simple indication that we're analyzing the build
+        console.log('Bundle analysis complete - see stats.html')
+      }
+    }
+  ],
   resolve: {
     alias: {
       '@': '/src',
     },
   },
   build: {
-    outDir: 'dist',
+    // Output to build directory instead of dist for Netlify compatibility
+    outDir: isNetlify ? 'build' : 'dist',
     minify: 'terser',
     terserOptions: {
       compress: {
-        drop_console: true,
-        pure_funcs: ['console.log', 'console.debug', 'console.info'],
-        passes: 2,
+        // Only drop console in production
+        drop_console: isProduction,
+        pure_funcs: isProduction ? ['console.log', 'console.debug', 'console.info'] : [],
+        passes: isProduction ? 2 : 1,
       }
     },
     cssMinify: true,
@@ -80,12 +97,15 @@ export default defineConfig({
       },
     },
     reportCompressedSize: true,
-    sourcemap: false,
+    // Enable source maps in development or when analyzing
+    sourcemap: !isProduction || analyzeBuild,
     target: 'es2020'
   },
   define: {
     'process.env.SITE': JSON.stringify('ipp'),
     'process.env.VITE_SITE_URL': JSON.stringify('https://ipp.tools'),
+    'process.env.VITE_NETLIFY': JSON.stringify(isNetlify ? 'true' : 'false'),
+    'process.env.VITE_NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
   },
   // Enable on-demand pre-loading of critical assets
   experimental: {
