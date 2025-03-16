@@ -12,7 +12,7 @@
     "dev:ipp": "npx lerna run dev --scope=ipp-main --stream",
     "dev:cascadevibe": "npx lerna run dev --scope=cascadevibe --stream",
     "preinstall": "node -e \"console.log('🔄 Installing dependencies...')\"",
-    "build": "npx lerna run build",
+    "build": "bash ./build.sh",
     
     "build:ipp": "mkdir -p sites/ipp-main/dist && echo '<html><head><title>IPP.TOOLS</title></head><body><h1>IPP.TOOLS</h1><p>Coming Soon</p></body></html>' > sites/ipp-main/dist/index.html || lerna run build --scope=ipp-main",
     "build:ipp:direct": "mkdir -p sites/ipp-main/dist && echo '<html><head><title>IPP.TOOLS</title></head><body><h1>IPP.TOOLS</h1><p>Coming Soon</p></body></html>' > sites/ipp-main/dist/index.html || lerna run build --scope=ipp-main",
